@@ -5,6 +5,7 @@ import AdminLayout from '@/components/AdminLayout'
 import Dashboard from '@/pages/Dashboard'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
+import DesignRequest from '@/pages/designers/DesignRequest'
 
 import Login from '@/pages/Login'
 
@@ -34,6 +35,11 @@ const routes = [
                 path: '/designer/design-requests',
                 name: 'DesignRequests',
                 component: DesignRequests
+            },
+            {
+                path: '/designer/design-request/:id',
+                name: 'DesignRequest',
+                component: DesignRequest
             }
         ]
     },
