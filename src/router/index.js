@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Dashboard from '@/components/Dashboard'
-import DashboardHome from '@/pages/Home'
-import DashboardProduct from '@/pages/Product'
+import AdminLayout from '@/components/AdminLayout'
+import Dashboard from '@/pages/Dashboard'
+import DesignersDashboard from '@/pages/DesignersDashboard'
+
 import Login from '@/pages/Login'
 
 Vue.use(Router);
@@ -11,25 +12,21 @@ Vue.use(Router);
 const routes = [
     {
         path: '/',
-        redirect: { name: 'DashboardHome' }
-    },
-    {
-        path: '/dashboard',
-        component: Dashboard,
+        component: AdminLayout,
         children: [
             {
                 path: '/',
-                redirect: { name: 'DashboardHome' }
+                name: 'Dashboard',
+                component: Dashboard
             },
             {
-                path: 'home',
-                name: 'DashboardHome',
-                component: DashboardHome
+                path: '/designer',
+                redirect: { name: 'DesignersDashboard' }
             },
             {
-                path: 'product',
-                name: 'DashboardProduct',
-                component: DashboardProduct
+                path: '/designer/dashboard',
+                name: 'DesignersDashboard',
+                component: DesignersDashboard
             }
         ]
     },
