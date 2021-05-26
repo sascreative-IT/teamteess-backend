@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import sideBar from './modules/sidebarModule';
+import user from './modules/user';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        sideBar
+        sideBar,
+        user
     }
 })

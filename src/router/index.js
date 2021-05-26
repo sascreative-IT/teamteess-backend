@@ -3,7 +3,8 @@ import Router from 'vue-router'
 
 import AdminLayout from '@/components/AdminLayout'
 import Dashboard from '@/pages/Dashboard'
-import DesignersDashboard from '@/pages/DesignersDashboard'
+import DesignersDashboard from '@/pages/designers/Dashboard'
+import DesignRequests from '@/pages/designers/DesignRequests'
 
 import Login from '@/pages/Login'
 
@@ -13,6 +14,7 @@ const routes = [
     {
         path: '/',
         component: AdminLayout,
+        meta: { requiresAuth: true },
         children: [
             {
                 path: '/',
@@ -27,12 +29,17 @@ const routes = [
                 path: '/designer/dashboard',
                 name: 'DesignersDashboard',
                 component: DesignersDashboard
+            },
+            {
+                path: '/designer/design-requests',
+                name: 'DesignRequests',
+                component: DesignRequests
             }
         ]
     },
     {
         path: '/login',
-        name: 'login',
+        name: 'Login',
         component: Login
     }
 ]
@@ -40,6 +47,14 @@ const routes = [
 const router = new Router({
     mode: 'history',
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    const loggedIn = localStorage.getItem('token')
+    if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+        next('/login')
+    }
+    next()
 });
 
 export default router
