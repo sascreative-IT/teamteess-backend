@@ -6,6 +6,7 @@ import Dashboard from '@/pages/Dashboard'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
 import DesignRequest from '@/pages/designers/DesignRequest'
+import UpdateDesignRequestStatus from '@/pages/designers/UpdateDesignRequestStatus'
 
 import Login from '@/pages/Login'
 
@@ -40,6 +41,11 @@ const routes = [
                 path: '/designer/design-request/:id',
                 name: 'DesignRequest',
                 component: DesignRequest
+            },
+            {
+                path: '/designer/design-request/update-status/:id',
+                name: 'UpdateDesignRequestStatus',
+                component: UpdateDesignRequestStatus
             }
         ]
     },

@@ -2,12 +2,21 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import sideBar from './modules/sidebarModule';
 import user from './modules/user';
+import designRequest from './modules/designRequest';
+import product from './modules/product';
+import order from './modules/order';
+import system from './modules/system';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
         sideBar,
-        user
+        user,
+        designRequest,
+        product,
+        order,
+        system
+
     }
 })

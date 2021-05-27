@@ -30,59 +30,76 @@
 
     <div class="flex flex-wrap">
       <div class="w-full">
-        <p class="text-xl font-semibold mb-4">Section Heading</p>
-        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0">
+        <p class="text-xl font-semibold mb-4">Design Requests</p>
+        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center pt-6 pb-6 pl-6 pr-1 mb-6 xl:mb-0">
           <el-table
-              :data="tableData"
+              :data="designRequests.data"
               style="width: 100%">
             <el-table-column
                 fixed
-                prop="date"
-                label="Date"
+                prop="id"
+                label="ID"
+                width="50">
+            </el-table-column>
+            <el-table-column
+                fixed
+                prop="order.id"
+                label="OrderID"
+                width="100">
+            </el-table-column>
+            <el-table-column
+                prop="order.user.first_name"
+                label="Customer"
+                width="180">
+            </el-table-column>
+            <el-table-column
+                prop="order_item.product_name"
+                label="Product"
+                width="120">
+            </el-table-column>
+
+            <el-table-column
+                prop="print_type_name"
+                label="Print Type"
+                width="120">
+            </el-table-column>
+
+            <el-table-column
+                prop="color_name"
+                label="Color"
+                width="120">
+            </el-table-column>
+
+            <el-table-column
+                prop="status_str"
+                label="Status"
                 width="150">
             </el-table-column>
+
             <el-table-column
-                prop="name"
-                label="Name"
-                width="120">
+                prop="design_status"
+                label="Design Status"
+                width="150">
             </el-table-column>
+
             <el-table-column
-                prop="name"
-                label="Name"
-                width="120">
+                prop="status_by_customer"
+                label="Approval Status"
+                width="150">
             </el-table-column>
+
             <el-table-column
-                prop="name"
-                label="Name"
-                width="120">
-            </el-table-column>
-            <el-table-column
-                prop="state"
-                label="State"
-                width="120">
-            </el-table-column>
-            <el-table-column
-                prop="city"
-                label="City"
-                width="120">
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="Address"
-                width="300">
-            </el-table-column>
-            <el-table-column
-                prop="zip"
-                label="Zip"
-                width="120">
+                prop="created_date"
+                label="Created Date"
+                width="200">
             </el-table-column>
             <el-table-column
                 fixed="right"
                 label="Operations"
-                width="120">
-              <template>
-                <el-button @click="handleClick" type="text" size="small">Detail</el-button>
-                <el-button type="text" size="small">Edit</el-button>
+                width="180">
+              <template slot-scope="scope">
+                <el-button type="primary" size="mini" v-on:click="handleViewClick(scope.row)" icon="el-icon-view"></el-button>
+                <el-button type="primary" size="mini" icon="el-icon-edit" v-on:click="handleUpdateClick(scope.row)"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -93,122 +110,32 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
 name: "DesignRequests",
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Home'
-      }, {
-        date: '2016-05-02',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Office'
-      },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        },{
-        date: '2016-05-04',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Home'
-      }, {
-        date: '2016-05-01',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-        tag: 'Office'
-      }]
+      designRequests: [],
     }
   },
   methods: {
-    handleClick() {
-      console.log('click');
+    ...mapActions('designRequest', ['fetchDesignRequests']),
+
+    async fetchDesignRequestsHandler() {
+          this.designRequests = await this.fetchDesignRequests(1);
+    },
+    handleViewClick(row) {
+      return this.$router.push({ name: "DesignRequest", params: {id: row.id}});
+    },
+
+    handleUpdateClick(row) {
+      return this.$router.push({ name: "UpdateDesignRequestStatus", params: {id: row.id}});
     }
   },
+  async mounted() {
+      await this.fetchDesignRequestsHandler();
+  }
 }
 </script>
 

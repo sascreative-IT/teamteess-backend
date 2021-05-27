@@ -30,50 +30,94 @@
 
     <div class="flex flex-wrap">
       <div class="w-full">
-        <p class="text-xl font-semibold mb-4">Section Heading</p>
+        <p class="text-xl font-semibold mb-4">Design Request Detail - ID - #{{designRequest.id}}</p>
         <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0">
-          <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item label="Activity name">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="Activity zone">
-              <el-select v-model="form.region" placeholder="please select your zone">
-                <el-option label="Zone one" value="shanghai"></el-option>
-                <el-option label="Zone two" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Activity time">
-              <el-col :span="11">
-                <el-date-picker type="date" placeholder="Pick a date" v-model="form.date1" style="width: 100%;"></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-time-picker placeholder="Pick a time" v-model="form.date2" style="width: 100%;"></el-time-picker>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="Instant delivery">
-              <el-switch v-model="form.delivery"></el-switch>
-            </el-form-item>
-            <el-form-item label="Activity type">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="Online activities" name="type"></el-checkbox>
-                <el-checkbox label="Promotion activities" name="type"></el-checkbox>
-                <el-checkbox label="Offline activities" name="type"></el-checkbox>
-                <el-checkbox label="Simple brand exposure" name="type"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="Resources">
-              <el-radio-group v-model="form.resource">
-                <el-radio label="Sponsor"></el-radio>
-                <el-radio label="Venue"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="Activity form">
-              <el-input type="textarea" v-model="form.desc"></el-input>
-            </el-form-item>
+          <el-form ref="form" :model="designRequest" label-width="220px" class="w-full">
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
-              <el-button>Cancel</el-button>
+              <img class="item-img" :src="`${productImageUrl}/${productImage}`" :alt=product.name height="25px;" />
+            </el-form-item>
+
+            <el-form-item label="Print Type">
+              <el-input readonly v-model="designRequest.print_type_name"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Color">
+              <el-input readonly v-model="designRequest.color_name"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Team Name">
+              <el-input readonly v-model="designRequest.team_name"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Purpose of The Team">
+              <el-input readonly v-model="designRequest.purpose_of_team"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Tag Line">
+              <el-input readonly v-model="designRequest.tag_line"></el-input>
+            </el-form-item>
+            <div class="mb-5">
+              Create a Logo
+            </div>
+            <el-form-item label="Graphic Design Requirements">
+              <el-input type="textarea"  readonly v-model="designRequest.logo_graphic_design_requirements"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Attached Reference">
+              <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_team_logo ">
+                Download Attach Reference
+              </a>
+            </el-form-item>
+
+            <el-form-item label="Look and Feel">
+              <ul>
+                <li v-for="look_and_feel in logo_look_and_feel" :key="look_and_feel.id">
+                  {{look_and_feel.name}}
+                </li>
+              </ul>
+            </el-form-item>
+
+            <div class="mb-5">
+              Create a Design for The print
+            </div>
+
+            <el-form-item label="Graphic Design Requirements">
+              <el-input type="textarea"  readonly v-model="designRequest.design_requirements"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Attached Reference">
+              <a :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_reference ">
+                Download Attach Reference
+              </a>
+            </el-form-item>
+
+            <el-form-item label="Look and Feel">
+              <ul>
+                <li v-for="look_and_feel in look_and_feels" :key="look_and_feel.id">
+                  {{look_and_feel.name}}
+                </li>
+              </ul>
+            </el-form-item>
+
+            <el-form-item label="Choose Typeface">
+              <el-input readonly v-model="designRequest.type_face"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Text Color">
+              <el-input readonly v-model="designRequest.text_color"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Special Notes">
+              <el-input readonly type="textarea" v-model="designRequest.special_notes"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Deadline">
+              <el-input readonly v-model="designRequest.deadline"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+              <el-button icon="el-icon-arrow-left el-icon-left" type="primary" v-on:click="goBack">Go Back</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -83,10 +127,22 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+import {getSlug} from "@/helpers/getSlug"
+
 export default {
 name: "DesignRequest",
   data() {
     return  {
+      designRequest: {},
+      productImageUrl : process.env.VUE_APP_IMAGE_BASE_URL + 'products',
+      attachmentBaseUrl : process.env.VUE_APP_ATTACHMENT_BASE_URL,
+      productImage: '',
+      product: {},
+      logo_look_and_feel: [],
+      look_and_feels: [],
+      colors: [],
+      fonts: [],
       form: {
         name: '',
         region: '',
@@ -100,10 +156,42 @@ name: "DesignRequest",
     }
   },
   methods: {
-    onSubmit() {
-      console.log('submit!');
+    ...mapActions('designRequest', ['fetchDesignRequest']),
+    ...mapActions('system', ['fetchLookAndFeels', 'fetchFontColors', 'fetchFonts']),
+    ...mapActions('order', ['fetchOrderItem']),
+    ...mapActions('product', ['fetchProduct']),
+
+    async fetchDesignRequestHandler(recordId) {
+      this.designRequest = await this.fetchDesignRequest(recordId);
+    },
+    goBack() {
+      return this.$router.push({ name: "DesignRequests"});
     }
   },
+  async beforeMount() {
+    let colors = await this.fetchFontColors();
+    this.colors = colors;
+    this.fonts = await this.fetchFonts();
+  },
+  async mounted() {
+    await this.fetchDesignRequestHandler(this.$route.params.id);
+    let product_color = getSlug(this.designRequest.color_name);
+    let orderItem = this.designRequest.order_item;
+    this.product = await this.fetchProduct(orderItem.product_id);
+    this.productImage = this.product.images.[product_color].front.url;
+
+    let look_and_feels = await this.fetchLookAndFeels();
+    for(let i = 0; i<look_and_feels.length; i++) {
+      if (this.designRequest.logo_look_and_feel.includes(look_and_feels[i].id)) {
+        this.logo_look_and_feel.push(look_and_feels[i]);
+      }
+    }
+    for(let i = 0; i<look_and_feels.length; i++) {
+      if (this.designRequest.design_look_and_feel.includes(look_and_feels[i].id)) {
+        this.look_and_feels.push(look_and_feels[i]);
+      }
+    }
+  }
 }
 </script>
 
@@ -115,4 +203,11 @@ name: "DesignRequest",
 .el-table .success-row {
   background: #f0f9eb;
 }
+
+.item-img {
+  width: 150px;
+  height: auto;
+  float: left;
+}
+
 </style>
