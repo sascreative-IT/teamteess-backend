@@ -35,8 +35,17 @@ const actions = {
     },
 
     updateDesignerStatus({commit},payload) {
-        console.log();
         return DesignRequestService.updateDesignerStatus(payload.id, payload.data).then(response => {
+            commit('SET_FETCH_DESIGN_REQUEST_SUCCESS', response.data);
+            return Promise.resolve(response.data);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
+
+    startWorking({commit},payload) {
+        return DesignRequestService.startWorking(payload.id).then(response => {
             commit('SET_FETCH_DESIGN_REQUEST_SUCCESS', response.data);
             return Promise.resolve(response.data);
         }).catch(error => {

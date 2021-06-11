@@ -43,31 +43,30 @@
             </el-table-column>
             <el-table-column
                 fixed
-                prop="order.id"
+                prop="order_id"
                 label="OrderID"
-                width="100">
+                width="120">
             </el-table-column>
             <el-table-column
                 prop="order.user.first_name"
-                label="Customer"
-                width="180">
+                label="Customer">
             </el-table-column>
+
             <el-table-column
-                prop="order_item.product_name"
-                label="Product"
+                prop="team_name"
+                label="Team Name">
+            </el-table-column>
+
+            <el-table-column
+                prop="deadline"
+                label="Deadline"
                 width="120">
             </el-table-column>
 
             <el-table-column
-                prop="print_type_name"
-                label="Print Type"
-                width="120">
-            </el-table-column>
-
-            <el-table-column
-                prop="color_name"
-                label="Color"
-                width="120">
+                prop="design_status_str"
+                label="Design Status"
+                width="150">
             </el-table-column>
 
             <el-table-column
@@ -76,30 +75,21 @@
                 width="150">
             </el-table-column>
 
-            <el-table-column
-                prop="design_status"
-                label="Design Status"
-                width="150">
-            </el-table-column>
-
-            <el-table-column
-                prop="status_by_customer"
-                label="Approval Status"
-                width="150">
-            </el-table-column>
 
             <el-table-column
                 prop="created_date"
                 label="Created Date"
                 width="200">
             </el-table-column>
+
             <el-table-column
                 fixed="right"
                 label="Operations"
-                width="180">
+                width="210">
               <template slot-scope="scope">
                 <el-button type="primary" size="mini" v-on:click="handleViewClick(scope.row)" icon="el-icon-view"></el-button>
                 <el-button type="primary" size="mini" icon="el-icon-edit" v-on:click="handleUpdateClick(scope.row)"></el-button>
+                <el-button v-if="scope.row.status === 1" type="primary" size="mini" icon="el-icon-edit" v-on:click="handleStartWork(scope.row)">Start</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -120,7 +110,7 @@ name: "DesignRequests",
     }
   },
   methods: {
-    ...mapActions('designRequest', ['fetchDesignRequests']),
+    ...mapActions('designRequest', ['fetchDesignRequests','startWorking']),
 
     async fetchDesignRequestsHandler() {
           this.designRequests = await this.fetchDesignRequests(1);
@@ -131,6 +121,17 @@ name: "DesignRequests",
 
     handleUpdateClick(row) {
       return this.$router.push({ name: "UpdateDesignRequestStatus", params: {id: row.id}});
+    },
+
+    handleStartWork (row) {
+      this.startWorking({
+        id: row.id
+      }).then((res) => {
+        row.design_status_str = res.design_status_str;
+        row.status_str = res.status_str;
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   },
   async mounted() {

@@ -33,86 +33,49 @@
         <p class="text-xl font-semibold mb-4">Design Request Detail - ID - #{{designRequest.id}}</p>
         <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0">
           <el-form ref="form" :model="designRequest" label-width="220px" class="w-full">
-            <el-form-item>
-              <img class="item-img" :src="`${productImageUrl}/${productImage}`" :alt=product.name height="25px;" />
-            </el-form-item>
-
-            <el-form-item label="Print Type">
-              <el-input readonly v-model="designRequest.print_type_name"></el-input>
-            </el-form-item>
-
-            <el-form-item label="Color">
-              <el-input readonly v-model="designRequest.color_name"></el-input>
-            </el-form-item>
 
             <el-form-item label="Team Name">
-              <el-input readonly v-model="designRequest.team_name"></el-input>
+              <p>{{designRequest.team_name}}</p>
             </el-form-item>
 
-            <el-form-item label="Purpose of The Team">
-              <el-input readonly v-model="designRequest.purpose_of_team"></el-input>
+            <el-form-item label="Purpose Of The Team">
+              <p>{{designRequest.purpose_of_team}}</p>
             </el-form-item>
 
             <el-form-item label="Tag Line">
-              <el-input readonly v-model="designRequest.tag_line"></el-input>
+              <p>{{designRequest.tag_line}}</p>
             </el-form-item>
-            <div class="mb-5">
-              Create a Logo
-            </div>
-            <el-form-item label="Graphic Design Requirements">
-              <el-input type="textarea"  readonly v-model="designRequest.logo_graphic_design_requirements"></el-input>
+
+
+            <el-form-item label="Design Requirements">
+              <p>{{designRequest.graphic_design_requirements}}</p>
             </el-form-item>
 
             <el-form-item label="Attached Reference">
-              <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_team_logo ">
+              <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_reference ">
                 Download Attach Reference
               </a>
             </el-form-item>
 
-            <el-form-item label="Look and Feel">
-              <ul>
-                <li v-for="look_and_feel in logo_look_and_feel" :key="look_and_feel.id">
-                  {{look_and_feel.name}}
-                </li>
-              </ul>
+            <el-form-item label="Look & Feel">
+              <p v-if="designRequest.look_and_feel">{{designRequest.look_and_feel.join(',')}}</p>
             </el-form-item>
 
-            <div class="mb-5">
-              Create a Design for The print
-            </div>
-
-            <el-form-item label="Graphic Design Requirements">
-              <el-input type="textarea"  readonly v-model="designRequest.design_requirements"></el-input>
-            </el-form-item>
-
-            <el-form-item label="Attached Reference">
-              <a :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_reference ">
-                Download Attach Reference
-              </a>
-            </el-form-item>
-
-            <el-form-item label="Look and Feel">
-              <ul>
-                <li v-for="look_and_feel in look_and_feels" :key="look_and_feel.id">
-                  {{look_and_feel.name}}
-                </li>
-              </ul>
-            </el-form-item>
 
             <el-form-item label="Choose Typeface">
-              <el-input readonly v-model="designRequest.type_face"></el-input>
+              <p>{{designRequest.type_face}}</p>
             </el-form-item>
 
             <el-form-item label="Text Color">
-              <el-input readonly v-model="designRequest.text_color"></el-input>
+             <p>{{designRequest.text_color}}</p>
             </el-form-item>
 
             <el-form-item label="Special Notes">
-              <el-input readonly type="textarea" v-model="designRequest.special_notes"></el-input>
+              <p>{{designRequest.special_notes}}</p>
             </el-form-item>
 
             <el-form-item label="Deadline">
-              <el-input readonly v-model="designRequest.deadline"></el-input>
+              <p>{{designRequest.deadline}}</p>
             </el-form-item>
 
 
@@ -128,21 +91,17 @@
 
 <script>
 import {mapActions} from "vuex";
-import {getSlug} from "@/helpers/getSlug"
 
 export default {
 name: "DesignRequest",
   data() {
     return  {
       designRequest: {},
-      productImageUrl : process.env.VUE_APP_IMAGE_BASE_URL + 'products',
-      attachmentBaseUrl : process.env.VUE_APP_ATTACHMENT_BASE_URL,
-      productImage: '',
-      product: {},
-      logo_look_and_feel: [],
+      design_look_and_feel: [],
       look_and_feels: [],
       colors: [],
       fonts: [],
+      attachmentBaseUrl: 'ht',
       form: {
         name: '',
         region: '',
@@ -175,22 +134,6 @@ name: "DesignRequest",
   },
   async mounted() {
     await this.fetchDesignRequestHandler(this.$route.params.id);
-    let product_color = getSlug(this.designRequest.color_name);
-    let orderItem = this.designRequest.order_item;
-    this.product = await this.fetchProduct(orderItem.product_id);
-    this.productImage = this.product.images.[product_color].front.url;
-
-    let look_and_feels = await this.fetchLookAndFeels();
-    for(let i = 0; i<look_and_feels.length; i++) {
-      if (this.designRequest.logo_look_and_feel.includes(look_and_feels[i].id)) {
-        this.logo_look_and_feel.push(look_and_feels[i]);
-      }
-    }
-    for(let i = 0; i<look_and_feels.length; i++) {
-      if (this.designRequest.design_look_and_feel.includes(look_and_feels[i].id)) {
-        this.look_and_feels.push(look_and_feels[i]);
-      }
-    }
   }
 }
 </script>

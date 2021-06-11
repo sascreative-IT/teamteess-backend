@@ -89,15 +89,9 @@ name: "UpdateDesignRequestStatus",
         label: 'Pending'
       }, {
         value: 2,
-        label: 'Approved'
-      }, {
-        value: 3,
-        label: 'Disapproved'
-      }, {
-        value: 4,
         label: 'Work in Progress'
       }, {
-        value: 5,
+        value: 3,
         label: 'Completed'
       }],
       designRequest: {},
@@ -119,8 +113,8 @@ name: "UpdateDesignRequestStatus",
         'id': this.designRequest.id,
         'data': {
           status_by_designer: this.status_by_designer,
-          body: this.comments,
-          attachment: this.attachment,
+          designer_comments: this.comments,
+          designer_attachment: this.attachment,
         }
       });
       this.$message.success("The status has been updated successfully.")
