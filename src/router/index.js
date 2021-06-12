@@ -33,7 +33,17 @@ const routes = [
                 component: DesignersDashboard
             },
             {
-                path: '/designer/design-requests',
+                path: '/designer/design-requests/:status',
+                name: 'DesignRequests',
+                component: DesignRequests
+            },
+            {
+                path: '/designer/design-requests/:status',
+                name: 'DesignRequests',
+                component: DesignRequests
+            },
+            {
+                path: '/designer/design-requests/:status',
                 name: 'DesignRequests',
                 component: DesignRequests
             },

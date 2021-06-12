@@ -107,13 +107,22 @@ name: "DesignRequests",
   data() {
     return {
       designRequests: [],
+      status : '',
+    }
+  },
+  watch: {
+    async $route(to, from) {
+      if (to !== from) {
+        let status = this.$route.params.status;
+        await this.fetchDesignRequestsHandler(status);
+      }
     }
   },
   methods: {
     ...mapActions('designRequest', ['fetchDesignRequests','startWorking']),
 
-    async fetchDesignRequestsHandler() {
-          this.designRequests = await this.fetchDesignRequests(1);
+    async fetchDesignRequestsHandler(status) {
+          this.designRequests = await this.fetchDesignRequests(status);
     },
     handleViewClick(row) {
       return this.$router.push({ name: "DesignRequest", params: {id: row.id}});
@@ -135,7 +144,8 @@ name: "DesignRequests",
     }
   },
   async mounted() {
-      await this.fetchDesignRequestsHandler();
+      let status = this.$route.params.status;
+      await this.fetchDesignRequestsHandler(status);
   }
 }
 </script>

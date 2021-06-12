@@ -31,45 +31,72 @@
     <div class="flex flex-wrap">
       <div class="w-full">
         <p class="text-xl font-semibold mb-4">Design Request Detail - ID - #{{designRequest.id}}</p>
-        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0">
-          <el-form ref="form" :model="designRequest" label-width="220px" class="w-full">
 
-            <el-form-item label="Status">
-              <el-select v-model="status_by_designer" value-key="designRequest.status_by_designer" placeholder="Select">
-                <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
+        <div class="w-full bg-white border text-blue-400 rounded-lg mb-5">
+
+          <div class="grid grid-cols-2 gap-2">
+
+            xx
+
+          </div>
+
+        </div>
 
 
-            <el-form-item label="Comments">
-              <el-input type="textarea"  v-model="comments"></el-input>
-            </el-form-item>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="w-full bg-white border text-blue-400 rounded-lg">
+            <div class="p-6 mb-6 xl:mb-0">
+              <el-form ref="form" :model="designRequest" label-width="220px" class="w-full">
 
-            <el-form-item label="Attachment">
-              <el-upload
-                  class="upload-demo"
-                  :action="fileUploadAction"
-                  :before-remove="beforeRemove"
-                  :on-success="bindAttachmentFileName"
-                  multiple
-                  :limit="1"
-                  :on-exceed="handleExceed"
-                  :file="attachment">
-                <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-              </el-upload>
-            </el-form-item>
+                <el-form-item label="Status">
+                  <el-select class="w-full" v-model="status_by_designer" value-key="designRequest.status_by_designer" placeholder="Select">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
 
 
-            <el-form-item>
-              <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
-            </el-form-item>
-          </el-form>
+                <el-form-item label="Comments">
+                  <el-input type="textarea"  v-model="comments"></el-input>
+                </el-form-item>
+
+                <el-form-item label="Attachment">
+                  <el-upload
+                      class="upload-demo"
+                      :action="fileUploadAction"
+                      :before-remove="beforeRemove"
+                      :on-success="bindAttachmentFileName"
+                      multiple
+                      :limit="1"
+                      :on-exceed="handleExceed"
+                      :file="attachment">
+                    <el-button size="small" type="primary">Click to upload</el-button>
+                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                  </el-upload>
+                </el-form-item>
+
+
+                <el-form-item>
+                  <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+
+
+          </div>
+          <div class="w-full bg-white border text-blue-400 rounded-lg">
+            <div class="p-6 mb-6 xl:mb-0">
+
+              <div class="box-border h-32 w-32 p-4 border-4">
+              <!-- ... -->
+            </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

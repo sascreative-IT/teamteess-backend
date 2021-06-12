@@ -14,6 +14,10 @@ export default {
         return privateAPI.put('/secure/design-requests/designer-status/' + id, payload)
     },
 
+    updateChangeRequestDesignerStatus: async (id, payload) => {
+        return privateAPI.put('/secure/design-requests/change-request/designer-status/' + id, payload)
+    },
+
     startWorking: async (id) => {
         return privateAPI.put('/secure/design-requests/start-working/' + id)
     }
