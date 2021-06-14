@@ -38,13 +38,14 @@ const actions = {
         return OrderService.fetchOrder(orderId)
             .then(({data}) => {
                 commit('SET_ORDER', data)
-                return Promise.resolve({data});
+                return Promise.resolve(data);
             })
             .catch((error) => {
                 return Promise.reject(error);
             });
     },
 
+    /*
     fetchOrders({commit}) {
         return OrderService.fetchOrders()
             .then(({data}) => {
@@ -54,6 +55,16 @@ const actions = {
             .catch((error) => {
                 return Promise.reject(error);
             });
+    },
+    */
+
+    fetchDyoOrders({commit}, status) {
+        return OrderService.fetchDyoOrders(status).then(response => {
+            commit('SET_ORDERS', response.data);
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
     },
 
     fetchOrderItem({commit}, orderItemId) {

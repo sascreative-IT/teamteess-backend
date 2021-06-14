@@ -5,6 +5,9 @@ import AdminLayout from '@/components/AdminLayout'
 import Dashboard from '@/pages/Dashboard'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
+import DyoOrders from '@/pages/designers/dyo/Orders';
+import DyoOrderView from '@/pages/designers/dyo/DyoOrderView';
+import DyoOrderItemView from '@/pages/designers/dyo/DyoOrderItemView';
 import DesignRequest from '@/pages/designers/DesignRequest'
 import UpdateDesignRequestStatus from '@/pages/designers/UpdateDesignRequestStatus'
 
@@ -56,7 +59,22 @@ const routes = [
                 path: '/designer/design-request/update-status/:id',
                 name: 'UpdateDesignRequestStatus',
                 component: UpdateDesignRequestStatus
-            }
+            },
+            {
+                path: '/designer/dyo-orders/:status',
+                name: 'DyoOrders',
+                component: DyoOrders
+            },
+            {
+                path: '/designer/dyo-orders/view/:id',
+                name: 'DyoOrderView',
+                component: DyoOrderView
+            },
+            {
+                path: '/designer/dyo-orders/view/:id/:itemId',
+                name: 'DyoOrderItemView',
+                component: DyoOrderItemView
+            },
         ]
     },
     {

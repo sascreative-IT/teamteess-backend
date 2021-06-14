@@ -7,6 +7,7 @@ import designerDashboard from './modules/designerDashboard';
 import product from './modules/product';
 import order from './modules/order';
 import system from './modules/system';
+import dyo from './modules/dyo';
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         product,
         order,
         system,
-        designerDashboard
+        designerDashboard,
+        dyo
     }
 })

@@ -1,0 +1,249 @@
+<template>
+  <div id="product">
+    <!-- breadcrumb -->
+    <nav class="text-sm font-semibold mb-6" aria-label="Breadcrumb">
+      <ol class="list-none p-0 inline-flex">
+        <li class="flex items-center text-blue-500">
+          <router-link :to="{ name: 'DesignersDashboard' }" class="text-gray-700">
+            Home
+          </router-link>
+          <svg class="fill-current w-3 h-3 mx-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path
+                d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/>
+          </svg>
+        </li>
+
+        <li class="flex items-center">
+          <router-link :to="{ name: 'DesignersDashboard' }" class="text-gray-700">
+            Designer
+          </router-link>
+          <svg class="fill-current w-3 h-3 mx-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path
+                d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/>
+          </svg>
+        </li>
+
+
+        <li class="flex items-center">
+          <router-link :to="{ name: 'DesignRequests' }" class="text-gray-600">
+            Design Requests
+          </router-link>
+        </li>
+
+      </ol>
+    </nav>
+    <!-- breadcrumb end -->
+
+    <div class="flex flex-wrap">
+
+      <div class="w-full">
+        <p class="text-xl font-semibold mb-4 float-left">Order ID - #{{ order.id }}</p>
+        <p class="text-xl font-semibold mb-4 float-right">
+          <el-tag type="info mr-5">Created on : {{ order.created_at }}</el-tag>
+          <strong>Status </strong> :
+          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="order.status === 1">Ready to start the
+            design.
+          </el-button>
+          <el-button type="primary" icon="el-icon-data-line" size="mini" v-if="order.status === 2">Work in
+            progress.
+          </el-button>
+          <el-button type="success" icon="el-icon-finished" size="mini" v-if="order.status === 3">Completed.
+          </el-button>
+        </p>
+      </div>
+
+      <div class="w-full bg-white border text-blue-400 rounded-lg flex-row items-center p-6 mb-6 xl:mb-0">
+        <el-form ref="form" label-width="180px" class="w-full">
+
+          <div class="grid grid-cols-2 gap-2">
+            <el-form-item label="Customer">
+              <p>{{ order.user.first_name }} {{ order.user.last_name }} ({{ order.user.email }})</p>
+            </el-form-item>
+
+            <el-form-item label="Company Name">
+              <p>{{ order.company_name }}</p>
+            </el-form-item>
+
+            <el-form-item label="Order Total">
+              <p>{{ order.cart_total }}</p>
+            </el-form-item>
+
+            <el-form-item label="Shipping Cost">
+              <p>(Pick up at store) 0.00</p>
+            </el-form-item>
+          </div>
+          <div class="grid grid-cols-1">
+            <el-divider content-position="left">Billing Address</el-divider>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+
+            <el-form-item label="Address : ">
+              <p>{{ order.billing_address }}</p>
+            </el-form-item>
+
+            <el-form-item label="City : ">
+              <p>{{ order.billing_city }}</p>
+            </el-form-item>
+
+            <el-form-item label="State : ">
+              <p>{{ order.billing_city }}</p>
+            </el-form-item>
+
+            <el-form-item label="Contact Number : ">
+              <p>{{ order.billing_mobile_number }}</p>
+            </el-form-item>
+
+          </div>
+
+
+          <div class="grid grid-cols-1">
+            <el-divider content-position="left">Shipping Address</el-divider>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <el-form-item label="Address : ">
+              <p>{{ order.shipping_address }}</p>
+            </el-form-item>
+
+            <el-form-item label="City : ">
+              <p>{{ order.shipping_city }}</p>
+            </el-form-item>
+
+            <el-form-item label="State : ">
+              <p>{{ order.shipping_city }}</p>
+            </el-form-item>
+
+            <el-form-item label="Contact Number : ">
+              <p>{{ order.shipping_mobile_number }}</p>
+            </el-form-item>
+          </div>
+
+        </el-form>
+
+        <div class="w-full">
+          <table>
+            <thead>
+            <tr>
+              <th class="center" width="2%">#</th>
+              <th width="15%">Item Code</th>
+              <th width="8%">Item</th>
+              <th>Description</th>
+              <th class="px-2" width="5%"><b>Tax</b></th>
+              <th class="center" width="5%">Quantity</th>
+              <th class="right" width="5%">Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(item, index) in order.items" :key="item.id">
+              <td>
+                {{ index + 1 }}
+              </td>
+              <td>
+                {{ item.product_style_code }}
+                <router-link :to="{ name: 'DyoOrderItemView', params: { 'id': order.id, 'itemId': item.id} }">
+                view Item
+                </router-link>
+              </td>
+              <td>
+                {{ item.product_name }}
+              </td>
+              <td>
+
+                <div class="w-full">
+
+                  <div class="grid" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']">
+                    <div>Size</div>
+                    <div v-if="item.has_nick_names == 'Yes'">Nick Name</div>
+                    <div>QTY</div>
+                    <div>Sub Total</div>
+                  </div>
+
+
+                    <div class="grid" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']" v-for="variation in item.order_item_variations" :key="variation.id">
+                      <div v-if="item.has_nick_names == 'Yes'">
+                        {{ variation.order_item_variation_values[1].attribute_value_name }}
+                      </div>
+                      <div>
+                        {{ variation.order_item_variation_values[0].attribute_value_name }}
+                      </div>
+                      <div>
+                        {{ variation.order_item_variation_values[0].qty }}
+                      </div>
+                      <div>
+                        {{ (item.product_price + variation.extra_cost).toFixed(2) }}
+                      </div>
+                    </div>
+
+                </div>
+
+              </td>
+              <td>15%</td>
+              <td>{{ item.qty }}</td>
+              <td>${{ item.grand_total.toFixed(2) }}</td>
+            </tr>
+
+            <tr>
+              <td colspan="5">
+                <strong>Notes : </strong> {{order.comment}}
+              </td>
+              <td>Total (Include Tax) : </td>
+              <td>$ {{order.cart_total.toFixed(2)}}</td>
+            </tr>
+
+            <tr>
+              <td colspan="5"></td>
+              <td>Tax (15%) : </td>
+              <td>$ {{tax.toFixed(2)}}</td>
+            </tr>
+
+            <tr>
+              <td colspan="5"></td>
+              <td>Grand Total : </td>
+              <td>${{order.total.toFixed(2)}}</td>
+            </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</template>
+
+<script>
+import {mapActions} from "vuex";
+
+export default {
+  name: "DyoOrderView",
+  data() {
+    return {
+      order: {},
+      status: '',
+      tax : '',
+    }
+  },
+  methods: {
+    ...mapActions('order', ['fetchOrder']),
+
+  },
+  async mounted() {
+    let orderId = this.$route.params.id;
+    this.order = await this.fetchOrder(orderId);
+    this.tax = this.order.cart_total * 0.15;
+  }
+}
+</script>
+
+<style scoped>
+table, th, td {
+  font-size: 12px;
+  color: #606266;
+}
+
+table {
+  width: 100%;
+}
+</style>

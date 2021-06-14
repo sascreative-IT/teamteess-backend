@@ -952,6 +952,18 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@minogin/vector@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@minogin/vector/-/vector-1.0.2.tgz#20a89cdbb261e53d09fa6392d40b267317151a46"
+  integrity sha512-iMlPme16/YbFmtcofRJS0RU17U7PL4pwIkEnCZ6heNGfQOwd7lMSgXUnZavI5SE4A3bllVISv99+KxNbOMbAow==
+
+"@minogin/vue-drag-resize-rotate@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@minogin/vue-drag-resize-rotate/-/vue-drag-resize-rotate-1.0.5.tgz#70012d6f530bfc544007064bda2ad44cfe528ed3"
+  integrity sha512-6dznybvbKtoCxbeOcgDPKHGIeHHZlMvyg5TgrwAUZGhy6O8lGBHApDGrZ2m7rprFeNp3GzSiSqr5OUzw9WglTg==
+  dependencies:
+    "@minogin/vector" "^1.0.2"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
