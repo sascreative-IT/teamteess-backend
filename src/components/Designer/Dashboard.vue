@@ -61,200 +61,65 @@
   <div class="flex flex-wrap -mx-3">
 
     <div class="w-full xl:w-1/3 px-3">
-      <p class="text-xl font-semibold mb-4">Recent Requests</p>
+      <p class="text-xl font-semibold mb-4">Recent Pending Requests</p>
 
       <div class="w-full bg-white border rounded-lg p-4">
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
+
+        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4" v-for="item in requestData.pending" :key="item.id">
+          <router-link :to="{ name: 'DesignRequests', params: {status: 1}}">
           <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
+            <p class="font-normal text-sm pr-5">{{item.order.user.first_name}}</p>
+            <p class="font-normal text-sm">Order ID : #{{item.order_id}}</p>
           </div>
           <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
+            <p class="lg:text-xs">{{item.created_at}}</p>
           </div>
+          </router-link>
         </div>
 
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
       </div>
     </div>
 
     <div class="w-full xl:w-1/3 px-3">
-      <p class="text-xl font-semibold mb-4">Recent 1st Change Requests</p>
+      <p class="text-xl font-semibold mb-4">Recent Requests In WIP</p>
 
       <div class="w-full bg-white border rounded-lg p-4">
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
+        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4" v-for="item in requestData.wip" :key="item.id">
 
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
+          <router-link :to="{ name: 'DesignRequest', params: {id: item.id}}">
           <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
+            <p class="font-normal text-sm pr-5">{{item.order.user.first_name}}</p>
+            <p class="font-normal text-sm">Order ID : #{{item.order_id}}</p>
           </div>
           <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
+            <p class="lg:text-xs">{{item.created_at}}</p>
           </div>
-        </div>
+          </router-link>
 
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
         </div>
       </div>
+
+
     </div>
 
     <div class="w-full xl:w-1/3 px-3">
-      <p class="text-xl font-semibold mb-4">Recent 2nd Change Requests</p>
+      <p class="text-xl font-semibold mb-4">Recently Completed Requests</p>
+
       <div class="w-full bg-white border rounded-lg p-4">
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
+        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4" v-for="item in requestData.completed" :key="item.id">
+          <router-link :to="{ name: 'DesignRequest', params: {id: item.id}}">
           <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
+            <p class="font-normal text-sm pr-5">{{item.order.user.first_name}}</p>
+            <p class="font-normal text-sm">Order ID : #{{item.order_id}}</p>
           </div>
           <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
+            <p class="lg:text-xs">{{item.created_at}}</p>
           </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
-        </div>
-
-        <div class="w-full bg-gray-100 border rounded-lg justify-between items-center mb-4">
-          <div class="flex px-2 pt-2">
-            <p class="font-normal text-sm pr-5">Trent Murphy</p>
-            <p class="font-normal text-sm">Order ID : #898989</p>
-          </div>
-          <div class="flex px-2 pb-2">
-            <p class="lg:text-xs">3 mins ago.</p>
-          </div>
+          </router-link>
         </div>
       </div>
+
+
     </div>
 
   </div>
@@ -262,6 +127,8 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
 name: "Dashboard",
   data() {
@@ -340,11 +207,20 @@ name: "Dashboard",
           }
         }
 
-      }
+      },
+      requestData: {}
     }
+  },
+  methods: {
+    ...mapActions('designerDashboard', ['fetchDashboardData']),
   },
   created() {
     this.userData = JSON.parse(localStorage.getItem("user"));
+  },
+  async mounted() {
+      await this.fetchDashboardData().then((res) => {
+        this.requestData = res;
+      });
   }
 }
 </script>

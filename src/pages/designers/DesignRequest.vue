@@ -189,8 +189,7 @@
               </el-timeline-item>
 
 
-              <span v-for="(item, index) in designRequest.change_requests" :key="item.id">
-              <el-timeline-item timestamp="2018/4/3" placement="top">
+              <el-timeline-item v-for="(item, index) in designRequest.change_requests" :key="item.id" :timestamp=item.designer_status_at placement="top">
                 <el-card class="mt-5">
 
                   <div slot="header" class="clearfix">
@@ -229,36 +228,37 @@
                     {{ item.designer_attachment }} Download</a>
                       </p>
                     <p class="mt-5"><strong>Status by designer : </strong>
-                    <el-tag type="info" v-if="designRequest.status_by_designer === 1">
+                    <el-tag type="info" v-if="item.status_by_designer === 1">
                       PENDING
                     </el-tag>
-                    <el-tag type="danger" v-if="designRequest.status_by_designer === 2">
+                    <el-tag type="danger" v-if="item.status_by_designer === 2">
                       WORK IN PROGRESS...
                     </el-tag>
-                    <el-tag type="success"  v-if="designRequest.status_by_designer === 3">
+                    <el-tag type="success"  v-if="item.status_by_designer === 3">
                       COMPLETED
                     </el-tag>
                   </p>
 
-                    <p class="mt-5"><strong>Customer Status : </strong>
-                    <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+                    <p class="mt-5" v-if="item.status_by_customer != null">
+                      <strong>Customer Status : </strong>
+                    <el-tag type="info" v-if="item.status_by_customer === 1">
                         PENDING
                     </el-tag>
-                    <el-tag type="success" v-if="designRequest.status_by_customer === 2">
+                    <el-tag type="success" v-if="item.status_by_customer === 2">
                       APPROVED
                     </el-tag>
-                    <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
+                    <el-tag type="danger" v-if="item.status_by_customer === 3">
                       DISAPPROVED
                     </el-tag>
 
                     , updated on
-                    : {{ designRequest.status_updated_by_customer_at }}</p>
+                    : {{ item.customer_status_at }}</p>
                   </template>
 
 
 
                   <template v-else>
-                    <el-divider content-position="left">Update Status</el-divider>
+                    <el-divider content-position="left" class="mt-5">Update Status</el-divider>
                     <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
 
                       <el-form-item label="Status">
@@ -307,7 +307,7 @@
 
                 </el-card>
               </el-timeline-item>
-              </span>
+
 
 
             </el-timeline>
