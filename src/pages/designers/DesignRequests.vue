@@ -87,8 +87,7 @@
                 label="Operations"
                 width="210">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" v-on:click="handleViewClick(scope.row)" icon="el-icon-view"></el-button>
-                <el-button type="primary" size="mini" icon="el-icon-edit" v-on:click="handleUpdateClick(scope.row)"></el-button>
+                <el-button type="primary" size="mini" v-on:click="handleViewClick(scope.row)" icon="el-icon-view"> View / Update</el-button>
                 <el-button v-if="scope.row.status === 1" type="primary" size="mini" icon="el-icon-edit" v-on:click="handleStartWork(scope.row)">Start</el-button>
               </template>
             </el-table-column>

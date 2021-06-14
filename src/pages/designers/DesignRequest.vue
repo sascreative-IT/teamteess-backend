@@ -105,6 +105,48 @@
         </div>
 
         <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mt-6 xl:mb-0"
+             v-if="designRequest.updated === 0">
+          <el-form ref="form" :model="designRequest" label-width="220px" class="w-1/2">
+
+            <el-form-item label="Status">
+              <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designRequest.status_by_designer" placeholder="Select">
+                <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+
+            <el-form-item label="Comments">
+              <el-input type="textarea"  v-model="designer_form.comments"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Attachment">
+              <el-upload
+                  class="upload-demo"
+                  :action="fileUploadAction"
+                  :before-remove="beforeRemove"
+                  :on-success="bindAttachmentFileName"
+                  multiple
+                  :limit="1"
+                  :on-exceed="handleExceed"
+                  :file="designer_form.attachment">
+                <el-button size="small" type="primary">Click to upload</el-button>
+                <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+              </el-upload>
+            </el-form-item>
+
+
+            <el-form-item>
+              <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mt-6 xl:mb-0"
              v-if="designRequest.updated === 1">
           <div class="block w-full">
             <el-timeline>
@@ -115,12 +157,33 @@
                   </div>
                   <h4>The graphic design submitted by {{ designRequest.designer_status_updated_by }} on
                     {{ designRequest.designer_status_at }}</h4>
-                  <p class="mt-2"><strong> Comments : </strong>{{ designRequest.designer_comments }}</p>
-                  <p class="mt-2"><strong>Attachment : </strong><a :href="designRequest.designer_attachment">
+                  <p class="mt-5"><strong> Comments : </strong>{{ designRequest.designer_comments }}</p>
+                  <p class="mt-5"><strong>Attachment : </strong><a :href="designRequest.designer_attachment">
                     {{ designRequest.designer_attachment }} Download</a></p>
 
-                  <p class="mt-2"><strong>Status by designer : </strong>{{ designRequest.status_by_designer }}</p>
-                  <p class="mt-2"><strong>Customer Status : </strong>{{ designRequest.status_by_customer }}, updated on
+                  <p class="mt-5"><strong>Status by designer : </strong>
+                    <el-tag type="info" v-if="designRequest.status_by_designer === 1">
+                      PENDING
+                    </el-tag>
+                    <el-tag type="danger" v-if="designRequest.status_by_designer === 2">
+                      WORK IN PROGRESS...
+                    </el-tag>
+                    <el-tag type="success"  v-if="designRequest.status_by_designer === 3">
+                      COMPLETED
+                    </el-tag>
+                  </p>
+                  <p class="mt-5"><strong>Customer Status : </strong>
+                    <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+                        PENDING
+                    </el-tag>
+                    <el-tag type="success" v-if="designRequest.status_by_customer === 2">
+                      APPROVED
+                    </el-tag>
+                    <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
+                      DISAPPROVED
+                    </el-tag>
+
+                    , updated on
                     : {{ designRequest.status_updated_by_customer_at }}</p>
                 </el-card>
               </el-timeline-item>
@@ -136,24 +199,63 @@
                     <span v-if="index == 2"> 3rd </span>
                     <span v-if="index > 2"> {{ index + 1 }}th </span>
                     <span>Change Request</span>
-                    <span style="float: right; padding: 3px 0">Payment Status : {{ item.payment_status }}</span>
+                    <span style="float: right; padding: 3px 0">Payment Status :
+
+                      <el-button type="info" size="mini" v-if="item.payment_status === 0">
+                        NOT APPLICABLE
+                      </el-button>
+
+                      <el-button type="danger" icon="el-icon-close" size="mini" v-if="item.payment_status === 1">
+                       PENDING
+                      </el-button>
+
+                       <el-button type="success" icon="el-icon-check" size="mini" v-if="item.payment_status === 2">
+                       PAID
+                      </el-button>
+                    </span>
                   </div>
 
                   <h4>Change request submitted by customer on {{ item.created_at }}</h4>
-                  <p class="mt-2"><strong> Description : </strong>{{ item.description }}</p>
-                  <p class="mt-2"><strong>Attachment : </strong><a :href="item.attachment">
+                  <p class="mt-5"><strong> Description : </strong>{{ item.description }}</p>
+                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
                     {{ item.attachment }} Download</a></p>
 
                   <template v-if="item.status_by_designer != null">
                       <el-divider content-position="left">The design completed</el-divider>
                       <h4>{{ item.designer_status_updated_by }} has updated on {{ item.designer_status_at }}</h4>
-                      <p class="mt-2"><strong> Comments : </strong>{{ item.designer_comments }}</p>
-                      <p class="mt-2">
+                      <p class="mt-5"><strong> Comments : </strong>{{ item.designer_comments }}</p>
+                      <p class="mt-5">
                         <strong>Attachment : </strong><a :href="item.designer_attachment">
                     {{ item.designer_attachment }} Download</a>
                       </p>
-                    <p class="mt-2"><strong> Status : </strong>{{ item.status_by_designer }}</p>
+                    <p class="mt-5"><strong>Status by designer : </strong>
+                    <el-tag type="info" v-if="designRequest.status_by_designer === 1">
+                      PENDING
+                    </el-tag>
+                    <el-tag type="danger" v-if="designRequest.status_by_designer === 2">
+                      WORK IN PROGRESS...
+                    </el-tag>
+                    <el-tag type="success"  v-if="designRequest.status_by_designer === 3">
+                      COMPLETED
+                    </el-tag>
+                  </p>
+
+                    <p class="mt-5"><strong>Customer Status : </strong>
+                    <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+                        PENDING
+                    </el-tag>
+                    <el-tag type="success" v-if="designRequest.status_by_customer === 2">
+                      APPROVED
+                    </el-tag>
+                    <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
+                      DISAPPROVED
+                    </el-tag>
+
+                    , updated on
+                    : {{ designRequest.status_updated_by_customer_at }}</p>
                   </template>
+
+
 
                   <template v-else>
                     <el-divider content-position="left">Update Status</el-divider>
@@ -244,7 +346,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('designRequest', ['fetchDesignRequest','updateChangeRequestDesignerStatus']),
+    ...mapActions('designRequest', ['fetchDesignRequest','updateChangeRequestDesignerStatus','updateDesignerStatus']),
     ...mapActions('system', ['fetchLookAndFeels', 'fetchFontColors', 'fetchFonts']),
     ...mapActions('order', ['fetchOrderItem']),
     ...mapActions('product', ['fetchProduct']),
@@ -264,6 +366,23 @@ export default {
     bindAttachmentFileName(file) {
       this.designer_form.attachment = file.path;
     },
+    async updateStatus() {
+      await this.updateDesignerStatus({
+        'id': this.designRequest.id,
+        'data': {
+          status_by_designer: this.designer_form.status_by_designer,
+          designer_comments: this.designer_form.comments,
+          designer_attachment: this.designer_form.attachment,
+        }
+      }).then((res) => {
+        this.designRequest = res;
+        this.$message.success("The status has been updated successfully.");
+
+      }).catch(() => {
+        this.$message.error("Failed to update the status. Please try again!")
+      });
+
+    },
     async updateChangeRequest(index, changeRequestId) {
       await this.updateChangeRequestDesignerStatus({
         'id': changeRequestId,
@@ -272,9 +391,9 @@ export default {
           designer_comments: this.designer_form.comments,
           designer_attachment: this.designer_form.attachment,
         }
-      }).then((res) => {
-        console.log(res)
-        //this.designRequest.change_requests[index] = res.change_requests[index];
+      }).then(async () => {
+        let requestId = this.designRequest.id;
+        await this.fetchDesignRequestHandler(requestId);
         this.$message.success("The status has been updated successfully.")
       }).catch(() => {
         this.$message.error("Failed to update the status. Please try again!")
