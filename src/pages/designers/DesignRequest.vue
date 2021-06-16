@@ -304,6 +304,12 @@
                     <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
                       {{ item.attachment }} Download</a></p>
 
+                    <template v-if="(item.payment_status !== 0 && item.estimation != null)">
+                      <el-divider content-position="left" class="mt-5">Estimated</el-divider>
+                      <h4>The change request estimated by {{ item.estimated_by }} on {{ item.estimated_at }}</h4>
+                      <p class="mt-5"><strong> Estimation : </strong>{{ item.estimation }} Hours</p>
+                    </template>
+
                     <template v-if="item.status_by_designer != null">
                       <el-divider content-position="left">The design completed</el-divider>
                       <h4>{{ item.designer_status_updated_by }} has updated on {{ item.designer_status_at }}</h4>
@@ -312,6 +318,9 @@
                         <strong>Attachment : </strong><a :href="item.designer_attachment">
                         {{ item.designer_attachment }} Download</a>
                       </p>
+
+
+
                       <p class="mt-5"><strong>Status by designer : </strong>
                         <el-tag type="info" v-if="item.status_by_designer === 1">
                           PENDING
@@ -391,6 +400,7 @@
                       </template>
 
 
+
                       <template v-if="(item.payment_status === 1 && item.estimation == null)">
 
                         <el-divider content-position="left" class="mt-5">Estimation</el-divider>
@@ -418,11 +428,7 @@
 
                       </template>
 
-                      <template v-if="(item.payment_status !== 0 && item.estimation != null)">
-                        <el-divider content-position="left" class="mt-5">Estimated</el-divider>
-                        <h4>The change request estimated by {{ item.estimated_by }} on {{ item.estimated_at }}</h4>
-                        <p class="mt-5"><strong> Estimation : </strong>{{ item.estimation }} Hours</p>
-                      </template>
+
 
 
 
