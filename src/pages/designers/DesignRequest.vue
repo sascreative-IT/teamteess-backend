@@ -104,101 +104,186 @@
           </el-form>
         </div>
 
-        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mt-6 xl:mb-0"
-             v-if="designRequest.updated === 0">
-          <el-form ref="form" :model="designRequest" label-width="220px" class="w-1/2">
 
-            <el-form-item label="Status">
-              <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designRequest.status_by_designer" placeholder="Select">
-                <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
+        <el-tabs type="border-card" class="mt-6" v-if="designRequest.updated === 0">
+          <el-tab-pane label="Messages">
 
 
-            <el-form-item label="Comments">
-              <el-input type="textarea"  v-model="designer_form.comments"></el-input>
-            </el-form-item>
+            <div class="block w-full">
+              <el-timeline>
+                <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
+                  <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                  <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                    {{ item.attachment }} Download</a></p>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
 
-            <el-form-item label="Attachment">
-              <el-upload
-                  class="upload-demo"
-                  :action="fileUploadAction"
-                  :before-remove="beforeRemove"
-                  :on-success="bindAttachmentFileName"
-                  multiple
-                  :limit="1"
-                  :on-exceed="handleExceed"
-                  :file="designer_form.attachment">
-                <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-              </el-upload>
-            </el-form-item>
+            <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+              <el-form-item label="Comments">
+                <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
+              </el-form-item>
+
+              <el-form-item label="Attachment">
+                <el-upload
+                    class="upload-demo"
+                    :action="fileUploadAction"
+                    :before-remove="beforeRemove"
+                    :on-success="bindCommentAttachmentFileName"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :file="designer_comment_form.attachment">
+                  <el-button size="small" type="primary">Click to upload</el-button>
+                  <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                </el-upload>
+              </el-form-item>
 
 
-            <el-form-item>
-              <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
+              <el-form-item>
+                <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="Status">
 
-        <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mt-6 xl:mb-0"
-             v-if="designRequest.updated === 1">
-          <div class="block w-full">
-            <el-timeline>
-              <el-timeline-item :timestamp=designRequest.designer_status_at placement="top">
-                <el-card class="mt-5">
-                  <div slot="header" class="clearfix">
-                    <span>Graphic Design</span>
-                  </div>
-                  <h4>The graphic design submitted by {{ designRequest.designer_status_updated_by }} on
-                    {{ designRequest.designer_status_at }}</h4>
-                  <p class="mt-5"><strong> Comments : </strong>{{ designRequest.designer_comments }}</p>
-                  <p class="mt-5"><strong>Attachment : </strong><a :href="designRequest.designer_attachment">
-                    {{ designRequest.designer_attachment }} Download</a></p>
+            <el-form ref="form" :model="designRequest" label-width="220px" class="w-1/2">
 
-                  <p class="mt-5"><strong>Status by designer : </strong>
-                    <el-tag type="info" v-if="designRequest.status_by_designer === 1">
-                      PENDING
-                    </el-tag>
-                    <el-tag type="danger" v-if="designRequest.status_by_designer === 2">
-                      WORK IN PROGRESS...
-                    </el-tag>
-                    <el-tag type="success"  v-if="designRequest.status_by_designer === 3">
-                      COMPLETED
-                    </el-tag>
-                  </p>
-                  <p class="mt-5"><strong>Customer Status : </strong>
-                    <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+              <el-form-item label="Status">
+                <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designRequest.status_by_designer" placeholder="Select">
+                  <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+
+
+              <el-form-item label="Comments">
+                <el-input type="textarea"  v-model="designer_form.comments"></el-input>
+              </el-form-item>
+
+              <el-form-item label="Attachment">
+                <el-upload
+                    class="upload-demo"
+                    :action="fileUploadAction"
+                    :before-remove="beforeRemove"
+                    :on-success="bindAttachmentFileName"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :file="designer_form.attachment">
+                  <el-button size="small" type="primary">Click to upload</el-button>
+                  <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                </el-upload>
+              </el-form-item>
+
+
+              <el-form-item>
+                <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
+              </el-form-item>
+            </el-form>
+
+          </el-tab-pane>
+        </el-tabs>
+
+        <el-tabs type="border-card" class="mt-6" v-if="designRequest.updated === 1">
+          <el-tab-pane label="Messages">
+            <div class="block w-full">
+              <el-timeline>
+                <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
+                  <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                  <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                    {{ item.attachment }} Download</a></p>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+
+            <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+              <el-form-item label="Comments">
+                <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
+              </el-form-item>
+
+              <el-form-item label="Attachment">
+                <el-upload
+                    class="upload-demo"
+                    :action="fileUploadAction"
+                    :before-remove="beforeRemove"
+                    :on-success="bindCommentAttachmentFileName"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :file="designer_comment_form.attachment">
+                  <el-button size="small" type="primary">Click to upload</el-button>
+                  <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                </el-upload>
+              </el-form-item>
+
+
+              <el-form-item>
+                <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
+              </el-form-item>
+            </el-form>
+
+          </el-tab-pane>
+          <el-tab-pane label="Status">
+            <div class="block w-full">
+              <el-timeline>
+                <el-timeline-item :timestamp=designRequest.designer_status_at placement="top">
+                  <el-card class="mt-5">
+                    <div slot="header" class="clearfix">
+                      <span>Graphic Design</span>
+                    </div>
+                    <h4>The graphic design submitted by {{ designRequest.designer_status_updated_by }} on
+                      {{ designRequest.designer_status_at }}</h4>
+                    <p class="mt-5"><strong> Comments : </strong>{{ designRequest.designer_comments }}</p>
+                    <p class="mt-5"><strong>Attachment : </strong><a :href="designRequest.designer_attachment">
+                      {{ designRequest.designer_attachment }} Download</a></p>
+
+                    <p class="mt-5"><strong>Status by designer : </strong>
+                      <el-tag type="info" v-if="designRequest.status_by_designer === 1">
                         PENDING
-                    </el-tag>
-                    <el-tag type="success" v-if="designRequest.status_by_customer === 2">
-                      APPROVED
-                    </el-tag>
-                    <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
-                      DISAPPROVED
-                    </el-tag>
+                      </el-tag>
+                      <el-tag type="danger" v-if="designRequest.status_by_designer === 2">
+                        WORK IN PROGRESS...
+                      </el-tag>
+                      <el-tag type="success"  v-if="designRequest.status_by_designer === 3">
+                        COMPLETED
+                      </el-tag>
+                    </p>
+                    <p class="mt-5"><strong>Customer Status : </strong>
+                      <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+                        PENDING
+                      </el-tag>
+                      <el-tag type="success" v-if="designRequest.status_by_customer === 2">
+                        APPROVED
+                      </el-tag>
+                      <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
+                        DISAPPROVED
+                      </el-tag>
 
-                    , updated on
-                    : {{ designRequest.status_updated_by_customer_at }}</p>
-                </el-card>
-              </el-timeline-item>
+                      , updated on
+                      : {{ designRequest.status_updated_by_customer_at }}</p>
+                  </el-card>
+                </el-timeline-item>
 
 
-              <el-timeline-item v-for="(item, index) in designRequest.change_requests" :key="item.id" :timestamp=item.designer_status_at placement="top">
-                <el-card class="mt-5">
+                <el-timeline-item v-for="(item, index) in designRequest.change_requests" :key="item.id" :timestamp=item.designer_status_at placement="top">
+                  <el-card class="mt-5">
 
-                  <div slot="header" class="clearfix">
-                    <span v-if="index == 0"> 1st </span>
-                    <span v-if="index == 1"> 2nd </span>
-                    <span v-if="index == 2"> 3rd </span>
-                    <span v-if="index > 2"> {{ index + 1 }}th </span>
-                    <span>Change Request</span>
-                    <span style="float: right; padding: 3px 0">Payment Status :
+                    <div slot="header" class="clearfix">
+                      <span v-if="index == 0"> 1st </span>
+                      <span v-if="index == 1"> 2nd </span>
+                      <span v-if="index == 2"> 3rd </span>
+                      <span v-if="index > 2"> {{ index + 1 }}th </span>
+                      <span>Change Request</span>
+                      <span style="float: right; padding: 3px 0">Payment Status :
 
                       <el-button type="info" size="mini" v-if="item.payment_status === 0">
                         NOT APPLICABLE
@@ -212,108 +297,148 @@
                        PAID
                       </el-button>
                     </span>
-                  </div>
+                    </div>
 
-                  <h4>Change request submitted by customer on {{ item.created_at }}</h4>
-                  <p class="mt-5"><strong> Description : </strong>{{ item.description }}</p>
-                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                    {{ item.attachment }} Download</a></p>
+                    <h4>Change request submitted by customer on {{ item.created_at }}</h4>
+                    <p class="mt-5"><strong> Description : </strong>{{ item.description }}</p>
+                    <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                      {{ item.attachment }} Download</a></p>
 
-                  <template v-if="item.status_by_designer != null">
+                    <template v-if="item.status_by_designer != null">
                       <el-divider content-position="left">The design completed</el-divider>
                       <h4>{{ item.designer_status_updated_by }} has updated on {{ item.designer_status_at }}</h4>
                       <p class="mt-5"><strong> Comments : </strong>{{ item.designer_comments }}</p>
                       <p class="mt-5">
                         <strong>Attachment : </strong><a :href="item.designer_attachment">
-                    {{ item.designer_attachment }} Download</a>
+                        {{ item.designer_attachment }} Download</a>
                       </p>
-                    <p class="mt-5"><strong>Status by designer : </strong>
-                    <el-tag type="info" v-if="item.status_by_designer === 1">
-                      PENDING
-                    </el-tag>
-                    <el-tag type="danger" v-if="item.status_by_designer === 2">
-                      WORK IN PROGRESS...
-                    </el-tag>
-                    <el-tag type="success"  v-if="item.status_by_designer === 3">
-                      COMPLETED
-                    </el-tag>
-                  </p>
+                      <p class="mt-5"><strong>Status by designer : </strong>
+                        <el-tag type="info" v-if="item.status_by_designer === 1">
+                          PENDING
+                        </el-tag>
+                        <el-tag type="danger" v-if="item.status_by_designer === 2">
+                          WORK IN PROGRESS...
+                        </el-tag>
+                        <el-tag type="success"  v-if="item.status_by_designer === 3">
+                          COMPLETED
+                        </el-tag>
+                      </p>
 
-                    <p class="mt-5" v-if="item.status_by_customer != null">
-                      <strong>Customer Status : </strong>
-                    <el-tag type="info" v-if="item.status_by_customer === 1">
-                        PENDING
-                    </el-tag>
-                    <el-tag type="success" v-if="item.status_by_customer === 2">
-                      APPROVED
-                    </el-tag>
-                    <el-tag type="danger" v-if="item.status_by_customer === 3">
-                      DISAPPROVED
-                    </el-tag>
+                      <p class="mt-5" v-if="item.status_by_customer != null">
+                        <strong>Customer Status : </strong>
+                        <el-tag type="info" v-if="item.status_by_customer === 1">
+                          PENDING
+                        </el-tag>
+                        <el-tag type="success" v-if="item.status_by_customer === 2">
+                          APPROVED
+                        </el-tag>
+                        <el-tag type="danger" v-if="item.status_by_customer === 3">
+                          DISAPPROVED
+                        </el-tag>
 
-                    , updated on
-                    : {{ item.customer_status_at }}</p>
-                  </template>
-
-
-
-                  <template v-else>
-                    <el-divider content-position="left" class="mt-5">Update Status</el-divider>
-                    <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
-
-                      <el-form-item label="Status">
-                  <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designer_form.status_by_designer" placeholder="Select">
-                    <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-
-                       <el-form-item label="Comments">
-                  <el-input type="textarea"  v-model="designer_form.comments"></el-input>
-                </el-form-item>
-
-
-                      <el-form-item label="Attachment">
-                  <el-upload
-                      class="upload-demo"
-                      :action="fileUploadAction"
-                      :before-remove="beforeRemove"
-                      :on-success="bindAttachmentFileName"
-                      multiple
-                      :limit="1"
-                      :on-exceed="handleExceed"
-                      :file="designer_form.attachment">
-                    <el-button size="small" type="primary">Click to upload</el-button>
-                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-                  </el-upload>
-                </el-form-item>
+                        , updated on
+                        : {{ item.customer_status_at }}</p>
+                    </template>
 
 
 
-                      <el-form-item size="large">
-                        <el-button type="primary" v-on:click="updateChangeRequest(index, item.id)">Update</el-button>
-                        <el-button>Cancel</el-button>
-                      </el-form-item>
-
-                    </el-form>
-
-                  </template>
+                    <template v-else>
 
 
+                      <template v-if="((item.payment_status === 0) || (item.payment_status === 2))">
+                      <el-divider content-position="left" class="mt-5">Update Status</el-divider>
+                      <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
 
-                </el-card>
-              </el-timeline-item>
+                        <el-form-item label="Status">
+                          <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designer_form.status_by_designer" placeholder="Select">
+                            <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Comments">
+                          <el-input type="textarea"  v-model="designer_form.comments"></el-input>
+                        </el-form-item>
+
+
+                        <el-form-item label="Attachment">
+                          <el-upload
+                              class="upload-demo"
+                              :action="fileUploadAction"
+                              :before-remove="beforeRemove"
+                              :on-success="bindAttachmentFileName"
+                              multiple
+                              :limit="1"
+                              :on-exceed="handleExceed"
+                              :file="designer_form.attachment">
+                            <el-button size="small" type="primary">Click to upload</el-button>
+                            <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                          </el-upload>
+                        </el-form-item>
 
 
 
-            </el-timeline>
-          </div>
-        </div>
+                        <el-form-item size="large">
+                          <el-button type="primary" v-on:click="updateChangeRequest(index, item.id)">Update</el-button>
+                          <el-button>Cancel</el-button>
+                        </el-form-item>
 
+                      </el-form>
+                      </template>
+
+
+                      <template v-if="(item.payment_status === 1 && item.estimation == null)">
+
+                        <el-divider content-position="left" class="mt-5">Estimation</el-divider>
+                        <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_estimation_form">
+                          <el-form-item label="Status">
+                            <el-select class="w-full" v-model="designer_estimation_form.estimation" value-key="designer_form.status_by_designer" placeholder="Select">
+
+                              <el-option
+                                  :label="1 + ` Hour`"
+                                  :value="1">
+                              </el-option>
+                              <el-option
+                                  v-for="(n,index) in 23"
+                                  :key="index"
+                                  :label="(n + 1) + ` Hours`"
+                                  :value="n + 1">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+
+                          <el-form-item size="mini">
+                            <el-button type="primary" v-on:click="submitEstimation(item.id)">Submit Estimation</el-button>
+                          </el-form-item>
+                        </el-form>
+
+                      </template>
+
+                      <template v-if="(item.payment_status !== 0 && item.estimation != null)">
+                        <el-divider content-position="left" class="mt-5">Estimated</el-divider>
+                        <h4>The change request estimated by {{ item.estimated_by }} on {{ item.estimated_at }}</h4>
+                        <p class="mt-5"><strong> Estimation : </strong>{{ item.estimation }} Hours</p>
+                      </template>
+
+
+
+                    </template>
+
+
+
+                  </el-card>
+                </el-timeline-item>
+
+
+
+              </el-timeline>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
 
       </div>
     </div>
@@ -339,6 +464,13 @@ export default {
         comments : '',
         attachment: ''
       },
+      designer_comment_form: {
+        comments : '',
+        attachment: ''
+      },
+      designer_estimation_form: {
+        estimation : ''
+      },
       options: [{
         value: 3,
         label: 'Completed'
@@ -346,10 +478,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('designRequest', ['fetchDesignRequest','updateChangeRequestDesignerStatus','updateDesignerStatus']),
+    ...mapActions('designRequest', ['fetchDesignRequest','updateChangeRequestDesignerStatus','updateDesignerStatus','updateEstimation']),
     ...mapActions('system', ['fetchLookAndFeels', 'fetchFontColors', 'fetchFonts']),
     ...mapActions('order', ['fetchOrderItem']),
     ...mapActions('product', ['fetchProduct']),
+    ...mapActions('comment', ['storeComment']),
 
     async fetchDesignRequestHandler(recordId) {
       this.designRequest = await this.fetchDesignRequest(recordId);
@@ -365,6 +498,9 @@ export default {
     },
     bindAttachmentFileName(file) {
       this.designer_form.attachment = file.path;
+    },
+    bindCommentAttachmentFileName(file) {
+      this.designer_comment_form.attachment = file.path;
     },
     async updateStatus() {
       await this.updateDesignerStatus({
@@ -399,6 +535,31 @@ export default {
         this.$message.error("Failed to update the status. Please try again!")
       });
     },
+    addComment() {
+      this.storeComment({
+        commentable_obj_id: this.designRequest.id,
+        commentable_obj: 'GraphicDesignRequest',
+        comments: this.designer_comment_form.comments,
+        attachment: this.designer_comment_form.attachment
+      }).then(async ()=>{
+        let requestId = this.designRequest.id;
+        await this.fetchDesignRequestHandler(requestId);
+        this.designer_comment_form.comments = '';
+        this.designer_comment_form.attachment = '';
+        this.$message.success("The message has been sent successfully.")
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    submitEstimation(id) {
+      this.updateEstimation({
+        'id': id,
+        'data': {
+          estimation: 2,
+        }
+      });
+      console.log("The estimation..", this.designer_estimation_form);
+    }
   },
   async beforeMount() {
     let colors = await this.fetchFontColors();

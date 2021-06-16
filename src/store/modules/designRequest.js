@@ -67,6 +67,14 @@ const actions = {
         });
     },
 
+    updateEstimation({commit},payload) {
+        return DesignRequestService.updateEstimation(payload.id, payload.data).then(response => {
+            commit('SET_FETCH_DESIGN_REQUEST_SUCCESS', response.data);
+            return Promise.resolve(response.data);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
 
 
 };

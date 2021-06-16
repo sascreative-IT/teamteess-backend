@@ -20,5 +20,9 @@ export default {
 
     startWorking: async (id) => {
         return privateAPI.put('/secure/design-requests/start-working/' + id)
+    },
+
+    updateEstimation: async (id, payload) => {
+        return privateAPI.put('/secure/design-requests/change-request/designer-estimation/' + id, payload)
     }
 }

@@ -8,6 +8,7 @@ import product from './modules/product';
 import order from './modules/order';
 import system from './modules/system';
 import dyo from './modules/dyo';
+import comment from './modules/comment';
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
         order,
         system,
         designerDashboard,
-        dyo
+        dyo,
+        comment
     }
 })
