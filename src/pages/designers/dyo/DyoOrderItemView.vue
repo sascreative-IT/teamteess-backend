@@ -41,8 +41,7 @@
         <p class="text-xl font-semibold mb-4 float-right">
           <el-tag type="info mr-5">Created on : {{ order.created_at }}</el-tag>
           <strong>Status </strong> :
-          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="order.status === 1">Ready to start the
-            design.
+          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="order.status === 1">Processing
           </el-button>
           <el-button type="primary" icon="el-icon-data-line" size="mini" v-if="order.status === 2">Work in
             progress.
@@ -52,7 +51,7 @@
         </p>
       </div>
 
-      <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center pt-6 pb-6 pl-6 pr-1 mb-6 xl:mb-0">
+      <div class="w-full bg-white border text-blue-400 rounded-lg pt-6 pb-6 pl-6 pr-1 mb-6 xl:mb-0">
 
         <div class="w-full">
           <div class="grid grid-cols-2 gap-2">
@@ -90,10 +89,26 @@
           </div>
         </div>
 
+        <div class="w-full">
+          <div v-if="designAttributes.front_image_name != null">
+            <p><strong>Front Image : </strong> {{designAttributes.front_image_name}}</p>
+          </div>
+
+          <div v-if="designAttributes.back_image_name != null">
+            <p><strong>Back Image : </strong> {{designAttributes.back_image_name}}</p>
+          </div>
+
+          <p><strong>Working File : </strong> {{designAttributes.working_file}}</p>
+
+        </div>
+
       </div>
 
 
     </div>
+
+
+
   </div>
 
 </template>
