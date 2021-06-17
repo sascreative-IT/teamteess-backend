@@ -41,12 +41,11 @@
         <p class="text-xl font-semibold mb-4 float-right">
           <el-tag type="info mr-5">Created on : {{ order.created_at }}</el-tag>
           <strong>Status </strong> :
-          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="order.status === 1">Processing
+          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="designAttributes.status_by_designer === 4">Estimated By Designer
           </el-button>
-          <el-button type="primary" icon="el-icon-data-line" size="mini" v-if="order.status === 2">Work in
-            progress.
+          <el-button type="primary" icon="el-icon-data-line" size="mini" v-if="designAttributes.status_by_customer === 1">Estimation Approved
           </el-button>
-          <el-button type="success" icon="el-icon-finished" size="mini" v-if="order.status === 3">Completed.
+          <el-button type="success" icon="el-icon-finished" size="mini" v-if="designAttributes.status_by_designer === 3">Completed.
           </el-button>
         </p>
       </div>
@@ -102,6 +101,136 @@
 
         </div>
 
+        <div class="w-full">
+          <el-tabs type="border-card" class="mt-6">
+            <el-tab-pane label="Messages">
+              <div class="block w-full">
+                <el-timeline>
+                  <el-timeline-item placement="top" v-for="(item, index) in designAttributes.comments" :key="index" :timestamp=item.created_at>
+                    <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                    <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                    <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                      {{ item.attachment }} Download</a></p>
+                  </el-timeline-item>
+                </el-timeline>
+              </div>
+
+
+              <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+                <el-form-item label="Comment Type">
+                  <el-radio v-model="designer_comment_form.commentType" label="1">Working file is missing</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="2">Customer doesn’t have Illustrator</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="3">Customer sends the wrong format</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="4">The Brief is not clear. Requesting clarifications</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="6">Design Edit</el-radio>
+                </el-form-item>
+
+                <el-form-item label="Comments">
+                  <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
+                </el-form-item>
+
+                <el-form-item label="Attachment">
+                  <el-upload
+                      class="upload-demo"
+                      :action="fileUploadAction"
+                      :before-remove="beforeRemove"
+                      :on-success="bindCommentAttachmentFileName"
+                      multiple
+                      :limit="1"
+                      :on-exceed="handleExceed"
+                      :file="designer_comment_form.attachment">
+                    <el-button size="small" type="primary">Click to upload</el-button>
+                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                  </el-upload>
+                </el-form-item>
+
+
+                <el-form-item>
+                  <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
+                </el-form-item>
+              </el-form>
+
+
+            </el-tab-pane>
+
+            <el-tab-pane label="Status">
+              <div class="block w-full">
+
+                <div class="block w-full">
+
+                  <el-timeline>
+                    <el-timeline-item placement="top" v-for="(item, index) in designAttributes.statuses" :key="index" :timestamp=item.created_at>
+                      <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                      <p class="mt-5"><strong> Title : </strong>{{ item.title }}
+                        <span v-if="item.title == 'Estimated'">{{ item.estimation }} Hours</span>
+                      </p>
+                      <p class="mt-5" v-if="item.title == 'Status Changed'"><strong> Current Status : </strong>{{ item.status }}</p>
+                      <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                      <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                        {{ item.attachment }} Download</a></p>
+                    </el-timeline-item>
+                  </el-timeline>
+
+                </div>
+
+
+                <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
+
+                  <el-form-item label="Status">
+                    <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designer_form.status_by_designer" placeholder="Select">
+                      <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+
+                  <el-form-item label="Estimation" v-if="designer_form.status_by_designer == 4">
+
+                    <el-radio
+                        v-for="estimation in estimationOptions"
+                        :key="estimation.value"
+                        v-model="designer_form.estimation" :label="estimation.value">
+                      {{estimation.label}}
+                    </el-radio>
+                  </el-form-item>
+
+                  <el-form-item label="Comments">
+                    <el-input type="textarea"  v-model="designer_form.comments"></el-input>
+                  </el-form-item>
+
+
+                  <el-form-item label="Attachment" v-if="designer_form.status_by_designer != 4">
+                    <el-upload
+                        class="upload-demo"
+                        :action="fileUploadAction"
+                        :before-remove="beforeRemove"
+                        :on-success="bindAttachmentFileName"
+                        multiple
+                        :limit="1"
+                        :on-exceed="handleExceed"
+                        :file="designer_form.attachment">
+                      <el-button size="mini">Click to upload</el-button>
+                    </el-upload>
+                  </el-form-item>
+
+
+
+                  <el-form-item size="large">
+                    <el-button type="primary" v-on:click="updateStatus">Update</el-button>
+                    <el-button>Cancel</el-button>
+                  </el-form-item>
+
+                </el-form>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+
       </div>
 
 
@@ -122,6 +251,7 @@ export default {
   name: "DyoOrderView",
   data() {
     return {
+      fileUploadAction: process.env.VUE_APP_API_URL + "/dyo/upload-file",
       order: {},
       orderItem: {},
       status: '',
@@ -131,13 +261,91 @@ export default {
       productImageBack: '',
       frontImageUrl: '',
       backImageUrl: '',
+      designer_comment_form: {
+        comments : '',
+        attachment: '',
+        commentType: '',
+      },
+      designer_form: {
+        status_by_designer: 3,
+        comments : '',
+        attachment: '',
+        estimation: ''
+      },
+      options: [
+          {
+            value: 4,
+            label: 'Send Estimation'
+          },
+          {
+            value: 3,
+            label: 'Completed'
+          }],
+      estimationOptions: [
+        {
+          value: 24,
+          label: '24 Hrs'
+        },
+        {
+          value: 48,
+          label: '48 Hrs'
+        },
+        {
+          value: 72,
+          label: '72 Hrs'
+        },
+      ]
     }
   },
   methods: {
     ...mapActions('order', ['fetchOrder', 'fetchOrderItem']),
-    ...mapActions('dyo', ['fetchDesign']),
+    ...mapActions('dyo', ['fetchDesign', 'updateDesignerStatus']),
+    ...mapActions('comment', ['storeComment']),
     ...mapActions('product', ['fetchProduct']),
+    handleExceed(files, fileList) {
+      this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
+    },
+    beforeRemove(file) {
+      return this.$confirm(`Cancel the transfer of ${ file.name } ?`);
+    },
 
+    bindCommentAttachmentFileName(file) {
+      this.designer_comment_form.attachment = file.path;
+    },
+    bindAttachmentFileName(file) {
+      this.designer_form.attachment = file.path;
+    },
+
+    addComment() {
+      this.storeComment({
+        commentable_obj_id: this.designAttributes.id,
+        commentable_obj: 'CustomDesign',
+        comments: this.designer_comment_form.comments,
+        attachment: this.designer_comment_form.attachment
+      }).then(async ()=>{
+        this.designAttributes = await this.fetchDesign(this.orderItem.custom_design_id);
+        this.designer_comment_form.comments = '';
+        this.designer_comment_form.attachment = '';
+        this.$message.success("The message has been sent successfully.")
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    async updateStatus() {
+      let id = this.orderItem.custom_design_id;
+      this.updateDesignerStatus({
+        'id': id,
+        'status' : this.designer_form.status_by_designer,
+        'estimation' : this.designer_form.estimation,
+        'comments' : this.designer_form.comments,
+        'attachment' : this.designer_form.attachment,
+      }).then((res) => {
+        this.designAttributes = res;
+      }).catch((error) => {
+        console.log(error)
+      });
+      console.log(".....", id);
+    },
   },
   components: {
     drr
