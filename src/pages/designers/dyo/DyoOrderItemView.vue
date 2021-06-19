@@ -67,15 +67,17 @@
                   top: designAttributes.front_printable_area_values.top + 'px'
                 }"
               >
+              <template v-if="designAttributes.front_image_name">
                 <drr
-                    :x=designAttributes.front_image_position_values.left
-                    :y=designAttributes.front_image_position_values.top
-                    :w=designAttributes.front_image_position_values.width
-                    :h=designAttributes.front_image_position_values.height
-                    :angle="designAttributes.front_image_position_values.angle"
+                  :x=designAttributes.front_image_position_values.left
+                  :y=designAttributes.front_image_position_values.top
+                  :w=designAttributes.front_image_position_values.width
+                  :h=designAttributes.front_image_position_values.height
+                  :angle="designAttributes.front_image_position_values.angle"
                 >
                  <img :src="frontImageUrl"/>
                 </drr>
+              </template>
               </div>
             </div>
             <div class="print-tees-wrapp">
@@ -90,15 +92,32 @@
                   left: designAttributes.back_printable_area_values.left + 'px',
                   top: designAttributes.back_printable_area_values.top + 'px'
                 }">
-                <drr
-                  :x=designAttributes.back_image_position_values.left
-                  :y=designAttributes.back_image_position_values.top
-                  :w=designAttributes.back_image_position_values.width
-                  :h=designAttributes.back_image_position_values.height
-                  :angle="designAttributes.back_image_position_values.angle"
-                >
-                <img :src="backImageUrl"/>
-              </drr>
+                <div 
+                  :style="{
+                    width: designAttributes.back_text_position_values.width + 'px',
+                    height: designAttributes.back_text_position_values.height + 'px',
+                    left: designAttributes.back_text_position_values.left + 'px',
+                    top: designAttributes.back_text_position_values.top + 'px',
+                  }">
+                    <div :style="{
+                      textAlign: designAttributes.back_text_position,
+                      color: designAttributes.back_text_front_color,
+                      fontFamily: designAttributes.back_text_front_name + ',' + ' ' + 'cursive',
+                      fontSize: designAttributes.back_text_front_size + 'px',
+                      letterSpacing: designAttributes.back_text_front_space + 'px'
+                    }">{{designAttributes.back_text_sample}}</div>
+                </div>
+                <template v-if="designAttributes.back_image_name">
+                  <drr
+                    :x=designAttributes.back_image_position_values.left
+                    :y=designAttributes.back_image_position_values.top
+                    :w=designAttributes.back_image_position_values.width
+                    :h=designAttributes.back_image_position_values.height
+                    :angle="designAttributes.back_image_position_values.angle"
+                  >
+                    <img :src="backImageUrl"/>
+                  </drr>
+                </template>
               </div>
             </div>
           </div>
@@ -407,6 +426,5 @@ table {
 .embroidery-print-area {
   position: absolute;
   overflow: hidden;
-  border: 1px solid green;
 }
 </style>
