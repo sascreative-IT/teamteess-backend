@@ -59,7 +59,14 @@
                 <img :src="productImageFront"/>
               </template>
               <div
-                  class="embroidery-print-area">
+                class="embroidery-print-area"
+                :style="{
+                  width: designAttributes.front_printable_area_values.width + 'px',
+                  height: designAttributes.front_printable_area_values.width + 'px',
+                  left: designAttributes.front_printable_area_values.left + 'px',
+                  top: designAttributes.front_printable_area_values.top + 'px'
+                }"
+              >
                 <drr
                     :x=designAttributes.front_image_position_values.left
                     :y=designAttributes.front_image_position_values.top
@@ -75,15 +82,24 @@
               <template>
                 <img :src="productImageBack"/>
               </template>
-              <drr
+              <div 
+                class="embroidery-print-area"
+                :style="{
+                  width: designAttributes.back_printable_area_values.width + 'px',
+                  height: designAttributes.back_printable_area_values.width + 'px',
+                  left: designAttributes.back_printable_area_values.left + 'px',
+                  top: designAttributes.back_printable_area_values.top + 'px'
+                }">
+                <drr
                   :x=designAttributes.back_image_position_values.left
                   :y=designAttributes.back_image_position_values.top
                   :w=designAttributes.back_image_position_values.width
                   :h=designAttributes.back_image_position_values.height
                   :angle="designAttributes.back_image_position_values.angle"
-              >
+                >
                 <img :src="backImageUrl"/>
               </drr>
+              </div>
             </div>
           </div>
         </div>
