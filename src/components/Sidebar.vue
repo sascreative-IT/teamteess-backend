@@ -60,7 +60,7 @@
           <span class="text-gray-700">Dashboard</span>
         </div>
       </router-link>
-      <router-link :to="{ name: 'DesignRequests', params: {status:1} }">
+      <router-link :to="{ name: 'DesignRequests', params: {status:1,paymentStatus: 2} }">
       <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
         <svg class="h-6 w-6 fill-current mr-2" viewBox="0 0 20 20">
           <path
@@ -69,7 +69,7 @@
         <span class="text-gray-700">Pending Requests</span>
       </div>
       </router-link>
-      <router-link :to="{ name: 'DesignRequests', params: {status:2} }">
+      <router-link :to="{ name: 'DesignRequests', params: {status:2,paymentStatus: 2} }">
       <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
         <svg class="h-6 w-6 fill-current mr-2" viewBox="0 0 20 20">
           <path
@@ -79,7 +79,7 @@
       </div>
       </router-link>
 
-      <router-link :to="{ name: 'DesignRequests', params: {status:3} }">
+      <router-link :to="{ name: 'DesignRequests', params: {status:3,paymentStatus: 2} }">
       <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
         <svg class="h-6 w-6 fill-current mr-2" viewBox="0 0 20 20">
           <path

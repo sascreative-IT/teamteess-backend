@@ -41,14 +41,9 @@
                 label="ID"
                 width="50">
             </el-table-column>
+
             <el-table-column
-                fixed
-                prop="order_id"
-                label="OrderID"
-                width="120">
-            </el-table-column>
-            <el-table-column
-                prop="order.user.first_name"
+                prop="user.first_name"
                 label="Customer">
             </el-table-column>
 
@@ -113,15 +108,19 @@ name: "DesignRequests",
     async $route(to, from) {
       if (to !== from) {
         let status = this.$route.params.status;
-        await this.fetchDesignRequestsHandler(status);
+        let paymentStatus = this.$route.params.paymentStatus;
+        await this.fetchDesignRequestsHandler(status, paymentStatus);
       }
     }
   },
   methods: {
     ...mapActions('designRequest', ['fetchDesignRequests','startWorking']),
 
-    async fetchDesignRequestsHandler(status) {
-          this.designRequests = await this.fetchDesignRequests(status);
+    async fetchDesignRequestsHandler(status, paymentStatus) {
+          this.designRequests = await this.fetchDesignRequests({
+            status: status,
+            paymentStatus: paymentStatus
+          });
     },
     handleViewClick(row) {
       return this.$router.push({ name: "DesignRequest", params: {id: row.id}});
@@ -144,7 +143,8 @@ name: "DesignRequests",
   },
   async mounted() {
       let status = this.$route.params.status;
-      await this.fetchDesignRequestsHandler(status);
+      let paymentStatus = this.$route.params.paymentStatus;
+      await this.fetchDesignRequestsHandler(status, paymentStatus);
   }
 }
 </script>

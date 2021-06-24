@@ -2,8 +2,8 @@ import {privateAPI} from './API'
 
 export default {
 
-    fetchDesignRequests: async (status) => {
-        return privateAPI.get('/secure/design-requests/?status=' + status)
+    fetchDesignRequests: async (payload) => {
+        return privateAPI.get('/secure/design-requests/?status=' + payload.status + '&payment-status=' + payload.paymentStatus)
     },
 
     fetchDesignRequest: async (id) => {

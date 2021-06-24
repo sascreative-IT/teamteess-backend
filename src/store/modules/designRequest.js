@@ -21,8 +21,8 @@ const mutations = {
 
 };
 const actions = {
-    fetchDesignRequests({commit}, status) {
-        return DesignRequestService.fetchDesignRequests(status).then(response => {
+    fetchDesignRequests({commit}, payload) {
+        return DesignRequestService.fetchDesignRequests(payload).then(response => {
             commit('SET_FETCH_DESIGN_REQUESTS_SUCCESS', response.data);
             return Promise.resolve(response);
         }).catch(error => {

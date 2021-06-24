@@ -55,7 +55,6 @@
         <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0">
           <el-form ref="form" :model="designRequest" label-width="220px" class="w-full">
 
-            <div class="grid grid-cols-2 gap-2">
 
               <el-form-item label="Team Name">
                 <p>{{ designRequest.team_name }}</p>
@@ -73,10 +72,15 @@
                 <p>{{ designRequest.graphic_design_requirements }}</p>
               </el-form-item>
 
-              <el-form-item label="Attached Reference">
-                <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + designRequest.attach_reference ">
-                  Download Attach Reference
-                </a>
+              <el-form-item label="Attached References">
+                <ul>
+                  <li v-for="attach_reference in designRequest.attach_references" :key="attach_reference">
+                    <a target="_blank" :href="attachmentBaseUrl + '/dyo/' + attach_reference ">
+                      {{attach_reference}}
+                    </a>
+                  </li>
+                </ul>
+
               </el-form-item>
 
               <el-form-item label="Look & Feel">
@@ -88,7 +92,7 @@
               </el-form-item>
 
               <el-form-item label="Text Color">
-                <p>{{ designRequest.text_color }}</p>
+                <p>{{ designRequest.text_colors }}</p>
               </el-form-item>
 
               <el-form-item label="Special Notes">
@@ -99,7 +103,13 @@
                 <p>{{ designRequest.deadline }}</p>
               </el-form-item>
 
-            </div>
+            <el-form-item label="Source Files">
+              <p>
+                <a :href="designRequest.source_file" target="_blank">
+                  {{ designRequest.source_file }}
+                </a>
+              </p>
+            </el-form-item>
 
           </el-form>
         </div>
@@ -182,6 +192,9 @@
                 </el-upload>
               </el-form-item>
 
+              <el-form-item label="Source file">
+                <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
+              </el-form-item>
 
               <el-form-item>
                 <el-button icon="el-icon-edit" type="primary" v-on:click="updateStatus">Submit</el-button>
@@ -258,7 +271,7 @@
                       </el-tag>
                     </p>
                     <p class="mt-5"><strong>Customer Status : </strong>
-                      <el-tag type="info" v-if="designRequest.status_by_customer === 1">
+                      <el-tag type="info" v-if="designRequest.status_by_customer == null">
                         PENDING
                       </el-tag>
                       <el-tag type="success" v-if="designRequest.status_by_customer === 2">
@@ -267,9 +280,11 @@
                       <el-tag type="danger" v-if="designRequest.status_by_customer === 3">
                         DISAPPROVED
                       </el-tag>
-
+                      <span v-if="designRequest.status_updated_by_customer_at">
                       , updated on
-                      : {{ designRequest.status_updated_by_customer_at }}</p>
+                      : {{ designRequest.status_updated_by_customer_at }}
+                        </span>
+                    </p>
                   </el-card>
                 </el-timeline-item>
 
@@ -389,6 +404,10 @@
                           </el-upload>
                         </el-form-item>
 
+                        <el-form-item label="Source file">
+                          <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
+                        </el-form-item>
+
 
 
                         <el-form-item size="large">
@@ -464,11 +483,12 @@ export default {
       look_and_feels: [],
       colors: [],
       fonts: [],
-      attachmentBaseUrl: 'ht',
+      attachmentBaseUrl: process.env.VUE_APP_ATTACHMENT_BASE_URL,
       designer_form: {
         status_by_designer: 3,
         comments : '',
-        attachment: ''
+        attachment: '',
+        source_file: ''
       },
       designer_comment_form: {
         comments : '',
@@ -480,7 +500,11 @@ export default {
       options: [{
         value: 3,
         label: 'Completed'
-      }],
+      },
+        {
+          value: 4,
+          label: 'Declined'
+        }],
     }
   },
   methods: {
@@ -515,6 +539,7 @@ export default {
           status_by_designer: this.designer_form.status_by_designer,
           designer_comments: this.designer_form.comments,
           designer_attachment: this.designer_form.attachment,
+          source_file: this.designer_form.source_file,
         }
       }).then((res) => {
         this.designRequest = res;
@@ -532,6 +557,7 @@ export default {
           status_by_designer: this.designer_form.status_by_designer,
           designer_comments: this.designer_form.comments,
           designer_attachment: this.designer_form.attachment,
+          source_file: this.designer_form.source_file,
         }
       }).then(async () => {
         let requestId = this.designRequest.id;
