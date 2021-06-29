@@ -142,7 +142,17 @@
             <p><strong>Back Image : </strong> {{designAttributes.back_image_name}}</p>
           </div>
 
-          <p><strong>Working File : </strong> {{designAttributes.working_file}}</p>
+          <p><strong>Working File : </strong>
+            <span class="from_customer" v-if="designAttributes.working_file_url == 'null'">
+            {{designAttributes.working_file}}
+            </span>
+            <span v-else>
+              <a :href="designAttributes.working_file_url" target="_blank">
+              {{designAttributes.working_file_url}}
+                </a>
+            </span>
+
+          </p>
 
         </div>
 
@@ -211,7 +221,15 @@
                       <p class="mt-5"><strong> Title : </strong>{{ item.title }}
                         <span v-if="item.title == 'Estimated'">{{ item.estimation }} Hours</span>
                       </p>
-                      <p class="mt-5" v-if="item.title == 'Status Changed'"><strong> Current Status : </strong>{{ item.status }}</p>
+                      <p class="mt-5" v-if="item.title == 'Status Changed'">
+                        <strong> Current Status : </strong>
+                        <template v-if="item.status == 3">
+                          Completed
+                        </template>
+                        <template v-if="item.status == 4">
+                          Estimated
+                        </template>
+                      </p>
                       <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
                       <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
                         {{ item.attachment }} Download</a></p>
@@ -261,6 +279,10 @@
                         :file="designer_form.attachment">
                       <el-button size="mini">Click to upload</el-button>
                     </el-upload>
+                  </el-form-item>
+
+                  <el-form-item label="Source file">
+                    <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
                   </el-form-item>
 
 
@@ -314,7 +336,8 @@ export default {
         status_by_designer: 3,
         comments : '',
         attachment: '',
-        estimation: ''
+        estimation: '',
+        source_file: ''
       },
       options: [
           {
@@ -383,12 +406,18 @@ export default {
         'estimation' : this.designer_form.estimation,
         'comments' : this.designer_form.comments,
         'attachment' : this.designer_form.attachment,
+        'source_file': this.designer_form.source_file,
       }).then((res) => {
         this.designAttributes = res;
-      }).catch((error) => {
-        console.log(error)
+        this.designer_form.status_by_designer = '';
+        this.designer_form.estimation = '';
+        this.designer_form.comments = '';
+        this.designer_form.attachment = '';
+        this.designer_form.source_file = '';
+        this.$message.success("The status has been updated successfully.")
+      }).catch(() => {
+        this.$message.error("Failed to update the status. Please try again!")
       });
-      console.log(".....", id);
     },
   },
 

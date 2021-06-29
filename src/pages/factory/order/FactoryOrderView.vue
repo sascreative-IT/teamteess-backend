@@ -39,16 +39,20 @@
       <div class="w-full">
         <p class="text-xl font-semibold mb-4 float-left">Order ID - #{{ order.id }}</p>
         <p class="text-xl font-semibold mb-4 float-right">
+          <el-tag type="info mr-5">Order Type : {{order.type}}</el-tag>
           <el-tag type="info mr-5">Created on : {{ order.created_at }}</el-tag>
           <strong>Status </strong> :
-          <el-button type="info" icon="el-icon-thumb" size="mini" v-if="order.status === 1">Ready to start the
-            design.
-          </el-button>
-          <el-button type="primary" icon="el-icon-data-line" size="mini" v-if="order.status === 2">Work in
-            progress.
-          </el-button>
-          <el-button type="success" icon="el-icon-finished" size="mini" v-if="order.status === 3">Completed.
-          </el-button>
+
+          <el-button type="success" size="mini" v-if="order.status === 1">Order Placed</el-button>
+          <el-button type="success" size="mini" v-if="order.status === 2">In Progress</el-button>
+          <el-button type="success" size="mini" v-if="order.status === 3">In Factory</el-button>
+          <el-button type="success" size="mini" v-if="order.status === 4">Shipped</el-button>
+          <el-button type="success" size="mini" v-if="order.status === 5">Completed</el-button>
+          <el-button type="success" size="mini" v-if="order.status === 6">Canceled</el-button>
+
+          <a href="https://merch.sas.co.nz/generate-po/2479/po/3137" target="_blank" class="ml-4">
+          <el-button type="success"  size="mini" icon="el-icon-download">Download PO</el-button>
+          </a>
         </p>
       </div>
 
@@ -65,7 +69,7 @@
             </el-form-item>
 
             <el-form-item label="Order Total">
-              <p>{{ order.cart_total }}</p>
+              <p>$ {{ order.cart_total.toFixed(2) }}</p>
             </el-form-item>
 
             <el-form-item label="Shipping Cost">
@@ -120,45 +124,46 @@
         </el-form>
 
         <div class="w-full">
-          <table>
-            <thead>
-            <tr>
-              <th class="center" width="2%">#</th>
-              <th width="15%">Item Code</th>
-              <th width="8%">Item</th>
-              <th>Description</th>
-              <th class="px-2" width="5%"><b>Tax</b></th>
-              <th class="center" width="5%">Quantity</th>
-              <th class="right" width="5%">Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, index) in order.items" :key="item.id">
-              <td>
-                {{ index + 1 }}
-              </td>
-              <td>
-                {{ item.product_style_code }}
-                <router-link :to="{ name: 'FactoryOrderItemView', params: { 'id': order.id, 'itemId': item.id} }">
-                view Item
-                </router-link>
-              </td>
-              <td>
-                {{ item.product_name }}
-              </td>
-              <td>
+          <div>
+            <table>
+              <thead>
+              <tr>
+                <th class="center" width="2%">#</th>
+                <th width="15%">Item Code</th>
+                <th width="8%">Item</th>
+                <th>Size & Numbers</th>
+                <th class="px-2" width="5%"><b>Tax</b></th>
+                <th class="center" width="5%">Qty</th>
+                <th class="right" width="8%">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in order.items" :key="item.id">
+                <td>
+                  {{ index + 1 }}
+                </td>
+                <td>
+                  {{ item.product_style_code }}
+                  <router-link v-if="order.type == 'DYO'" target="_blank" class="el-icon-link" :to="{ name: 'FactoryOrderItemView', params: { 'id': order.id, 'itemId': item.id} }">
+                    view Item
+                  </router-link>
+                </td>
+                <td>
+                  {{ item.product_name }}
+                </td>
+                <td>
 
-                <div class="w-full">
+                  <div class="w-full">
 
-                  <div class="grid" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']">
-                    <div>Size</div>
-                    <div v-if="item.has_nick_names == 'Yes'">Nick Name</div>
-                    <div>QTY</div>
-                    <div>Sub Total</div>
-                  </div>
+                    <div class="grid mb-2 border-b-2 bg-gray-300 p-1" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']">
+                      <div class="font-bold">Size</div>
+                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name</div>
+                      <div class="font-bold">QTY</div>
+                      <div class="font-bold">Sub Total</div>
+                    </div>
 
 
-                    <div class="grid" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']" v-for="variation in item.order_item_variations" :key="variation.id">
+                    <div class="grid mb-1 border-b" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']" v-for="variation in item.order_item_variations" :key="variation.id">
                       <div v-if="item.has_nick_names == 'Yes'">
                         {{ variation.order_item_variation_values[1].attribute_value_name }}
                       </div>
@@ -173,37 +178,52 @@
                       </div>
                     </div>
 
-                </div>
+                  </div>
 
-              </td>
-              <td>15%</td>
-              <td>{{ item.qty }}</td>
-              <td>${{ item.grand_total.toFixed(2) }}</td>
-            </tr>
+                </td>
+                <td align="right">15%</td>
+                <td align="right">{{ item.qty }}</td>
+                <td align="right">${{ item.grand_total.toFixed(2) }}</td>
+              </tr>
 
-            <tr>
-              <td colspan="5">
-                <strong>Notes : </strong> {{order.comment}}
-              </td>
-              <td>Total (Include Tax) : </td>
-              <td>$ {{order.cart_total.toFixed(2)}}</td>
-            </tr>
+              <tr>
+                <td colspan="4">
+                  <strong>Notes : </strong>{{order.comment}}
+                </td>
+                <td colspan="2">Total (Include Tax) : </td>
+                <td>$ {{order.cart_total.toFixed(2)}}</td>
+              </tr>
 
-            <tr>
-              <td colspan="5"></td>
-              <td>Tax (15%) : </td>
-              <td>$ {{tax.toFixed(2)}}</td>
-            </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="2">Tax (15%) : </td>
+                <td>$ {{tax.toFixed(2)}}</td>
+              </tr>
 
-            <tr>
-              <td colspan="5"></td>
-              <td>Grand Total : </td>
-              <td>${{order.total.toFixed(2)}}</td>
-            </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="2">Grand Total : </td>
+                <td>${{order.total.toFixed(2)}}</td>
+              </tr>
 
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
 
+          <div>
+
+            <div class="mt-4" v-if="order.status!=4">
+              <div class="mb-4">
+                <el-alert
+                    title="Send to factory"
+                    type="warning"
+                    description="Click the bellow button to change the order status to shipped.">
+                </el-alert>
+              </div>
+
+              <el-button type="primary" v-on:click="updateStatusHandler">Shipped</el-button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -226,8 +246,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions('order', ['fetchOrder']),
+    ...mapActions('order', ['fetchOrder','updateStatus']),
 
+    updateStatusHandler() {
+      this.updateStatus({
+        id: this.order.id,
+        status: 4,
+      }).then((res) => {
+        this.order = res;
+      }).catch(() => {
+        this.$message.error("Failed to update the status. Please try again!")
+      });
+    }
   },
   async mounted() {
     let orderId = this.$route.params.id;
@@ -241,9 +271,15 @@ export default {
 table, th, td {
   font-size: 12px;
   color: #606266;
+  border: 1px solid #e2e8f0;
+  border-collapse: collapse;
 }
 
 table {
   width: 100%;
+}
+
+th, td {
+  padding: 15px;
 }
 </style>

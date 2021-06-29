@@ -86,6 +86,19 @@ const actions = {
                 return Promise.reject(error);
             });
     },
+
+    updateStatus({commit}, payload) {
+        return OrderService.updateStatus(payload.id, {
+            'status': payload.status,
+        })
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
 }
 
 export default {

@@ -214,6 +214,11 @@
                   </el-form-item>
 
 
+                  <el-form-item label="Source file">
+                    <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
+                  </el-form-item>
+
+
 
                   <el-form-item size="large">
                     <el-button type="primary" v-on:click="updateStatus">Update</el-button>
@@ -261,10 +266,11 @@ export default {
         commentType: '',
       },
       designer_form: {
-        status_by_designer: 3,
+        status_by_designer: '',
         comments : '',
         attachment: '',
-        estimation: ''
+        estimation: '',
+        source_file: ''
       },
       options: [
           {

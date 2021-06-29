@@ -98,7 +98,7 @@ export default {
     async $route(to, from) {
       if (to !== from) {
         let status = this.$route.params.status;
-        await this.fetchDesignRequestsHandler(status);
+        await this.fetchDyoOrdersHandler(status);
       }
     }
   },

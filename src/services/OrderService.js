@@ -17,4 +17,8 @@ export default {
     fetchFactoryOrders: async (status) => {
         return privateAPI.get('/secure/factory/orders/?status=' + status)
     },
+
+    updateStatus: async (orderId, payload) => {
+        return privateAPI.put('/secure/orders/update-status/'+ orderId, payload)
+    },
 }

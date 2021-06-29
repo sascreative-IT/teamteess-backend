@@ -33,6 +33,7 @@ const actions = {
             'estimation' : payload.estimation,
             'comments' : payload.comments,
             'attachment' : payload.attachment,
+            'source_file': payload.source_file,
         })
             .then(({data}) => {
                 commit('SET_FETCH_DESIGN_ACTION', data)
