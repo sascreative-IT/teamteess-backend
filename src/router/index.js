@@ -6,6 +6,9 @@ import Dashboard from '@/pages/Dashboard'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
 import DyoOrders from '@/pages/designers/dyo/Orders';
+import FactoryOrders from '@/pages/factory/order/Orders';
+import FactoryOrderView from '@/pages/factory/order/FactoryOrderView';
+import FactoryOrderItemView from '@/pages/factory/order/OrderItemView';
 import DyoOrderView from '@/pages/designers/dyo/DyoOrderView';
 import DyoOrderItemView from '@/pages/designers/dyo/DyoOrderItemView';
 import DesignRequest from '@/pages/designers/DesignRequest'
@@ -64,6 +67,21 @@ const routes = [
                 path: '/designer/dyo-orders/view/:id/:itemId',
                 name: 'DyoOrderItemView',
                 component: DyoOrderItemView
+            },
+            {
+                path: '/factory/orders/:status',
+                name: 'FactoryOrders',
+                component: FactoryOrders
+            },
+            {
+                path: '/factory/orders/view/:id',
+                name: 'FactoryOrderView',
+                component: FactoryOrderView
+            },
+            {
+                path: '/factory/orders/view/:id/:itemId',
+                name: 'FactoryOrderItemView',
+                component: FactoryOrderItemView
             },
         ]
     },

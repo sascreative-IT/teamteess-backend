@@ -13,4 +13,8 @@ export default {
     fetchOrderItem: async (orderItemId) => {
         return privateAPI.get('/orders/item/' + orderItemId)
     },
+
+    fetchFactoryOrders: async (status) => {
+        return privateAPI.get('/secure/factory/orders/?status=' + status)
+    },
 }

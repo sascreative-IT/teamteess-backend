@@ -67,6 +67,15 @@ const actions = {
         });
     },
 
+    fetchFactoryOrders({commit}, status) {
+        return OrderService.fetchFactoryOrders(status).then(response => {
+            commit('SET_ORDERS', response.data);
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
     fetchOrderItem({commit}, orderItemId) {
         return OrderService.fetchOrderItem(orderItemId)
             .then(({data}) => {
