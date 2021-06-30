@@ -39,7 +39,15 @@
       <div class="w-full">
         <p class="text-xl font-semibold mb-4 float-left">Order ID - #{{ order.id }}</p>
         <p class="text-xl font-semibold mb-4 float-right">
-          <el-tag type="info mr-5">Order Type : {{order.type}}</el-tag>
+          <el-tag type="info mr-5">Order Type : {{order.type}}
+            <template v-if="order.type == 'GraphicDesign'">
+              <router-link class="el-icon-link text-xs" :to="{ name: 'DesignRequest', params: {id: order.graphic_design_request.id}}" target="_blank">
+                View Details
+              </router-link>
+            </template>
+          </el-tag>
+
+
           <el-tag type="info mr-5">Created on : {{ order.created_at }}</el-tag>
           <strong>Status </strong> :
 
