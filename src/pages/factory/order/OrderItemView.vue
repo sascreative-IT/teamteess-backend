@@ -71,7 +71,7 @@
                        class="print-area-set-text"
                        :style="{
                                     color: designAttributes.color_name,
-                                    fontSize: (designAttributes.front_text_front_size * 37.7952755906) + 'px',
+                                    fontSize: (designAttributes.front_text_front_size * 4) + 'px',
                                     fontFamily: designAttributes.front_text_front_name + ',' + ' ' + 'cursive',
                                     letterSpacing: designAttributes.front_text_front_space
                                 }"
@@ -109,7 +109,7 @@
                        class="print-area-set-text"
                        :style="{
                                     color: designAttributes.color_name,
-                                    fontSize: (designAttributes.back_text_front_size * 37.7952755906) + 'px',
+                                    fontSize: (designAttributes.back_text_front_size * 4) + 'px',
                                     fontFamily: designAttributes.back_text_front_name + ',' + ' ' + 'cursive',
                                     letterSpacing: designAttributes.back_text_front_space
                                 }"

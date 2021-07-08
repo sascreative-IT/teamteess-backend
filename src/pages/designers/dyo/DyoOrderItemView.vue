@@ -71,7 +71,7 @@
                        class="print-area-set-text"
                        :style="{
                                     color: designAttributes.color_name,
-                                    fontSize: (designAttributes.front_text_front_size * 37.7952755906) + 'px',
+                                    fontSize: (designAttributes.front_text_front_size * 4) + 'px',
                                     fontFamily: designAttributes.front_text_front_name + ',' + ' ' + 'cursive',
                                     letterSpacing: designAttributes.front_text_front_space
                                 }"
@@ -108,10 +108,14 @@
                   <div v-if="designAttributes.back_text_sample != null"
                        class="print-area-set-text"
                        :style="{
-                                    color: designAttributes.color_name,
-                                    fontSize: (designAttributes.back_text_front_size * 37.7952755906) + 'px',
+                                    color: designAttributes.back_text_front_color,
+                                    fontSize: (designAttributes.back_text_front_size * 4) + 'px',
                                     fontFamily: designAttributes.back_text_front_name + ',' + ' ' + 'cursive',
-                                    letterSpacing: designAttributes.back_text_front_space
+                                    letterSpacing: designAttributes.back_text_front_space,
+                                    width: designAttributes.back_text_position_values.width + 'px',
+                                    height: designAttributes.back_text_position_values.height + 'px',
+                                    top: designAttributes.back_text_position_values.top + 'px',
+                                    left: designAttributes.back_text_position_values.left + 'px',
                                 }"
                   >
                     {{designAttributes.back_text_sample}}
