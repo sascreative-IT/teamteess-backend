@@ -75,7 +75,7 @@
               <el-form-item label="Attached References">
                 <ul>
                   <li v-for="attach_reference in designRequest.attach_references" :key="attach_reference">
-                    <a target="_blank" :href="attachmentBaseUrl + '/dyo/' + attach_reference ">
+                    <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + attach_reference ">
                       {{attach_reference}}
                     </a>
                   </li>
@@ -92,7 +92,7 @@
               </el-form-item>
 
               <el-form-item label="Text Color">
-                <p>{{ designRequest.text_colors }}</p>
+                <p>{{ designRequest.text_colors.join(',') }}</p>
               </el-form-item>
 
               <el-form-item label="Special Notes">
