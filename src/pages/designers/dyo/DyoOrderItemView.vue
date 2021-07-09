@@ -147,16 +147,16 @@
           </div>
 
           <p><strong>Working File : </strong>
-            <span class="from_customer" v-if="designAttributes.working_file_url == 'null' || designAttributes.working_file_url == ''">
-           <a :href="attachmentBaseUrl + 'dyo/' +  designAttributes.working_file" target="_blank">
-            {{designAttributes.working_file}}
-           </a>
-            </span>
-            <span v-else>
-              <a :href="designAttributes.working_file_url" target="_blank">
+
+            <a :href="attachmentBaseUrl + 'dyo/' +  designAttributes.working_file" target="_blank">
+              {{designAttributes.working_file}}
+            </a>
+
+            /
+
+            <a :href="designAttributes.working_file_url" target="_blank">
               {{designAttributes.working_file_url}}
-                </a>
-            </span>
+            </a>
 
           </p>
 
