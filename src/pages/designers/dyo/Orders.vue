@@ -56,11 +56,6 @@
                 label="Total">
             </el-table-column>
 
-            <el-table-column
-                prop="status"
-                label="Status">
-            </el-table-column>
-
 
             <el-table-column
                 prop="created_date"
