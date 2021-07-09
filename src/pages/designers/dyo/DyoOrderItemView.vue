@@ -146,8 +146,8 @@
             <p><strong>Back Image : </strong> {{designAttributes.back_image_name}}</p>
           </div>
 
-          <p><strong>Working File : </strong>
-            <span class="from_customer" v-if="designAttributes.working_file_url == 'null'">
+          <p><strong>Working File : </strong> {{designAttributes.working_file}} - {{designAttributes.working_file_url}}
+            <span class="from_customer" v-if="designAttributes.working_file_url == 'null' || designAttributes.working_file_url == ''">
             {{designAttributes.working_file}}
             </span>
             <span v-else>
