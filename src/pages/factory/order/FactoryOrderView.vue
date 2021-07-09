@@ -210,6 +210,12 @@
 
               <tr>
                 <td colspan="4"></td>
+                <td colspan="2">Shipping : ({{order.shipping_method_description}})</td>
+                <td>$ {{order.shipping_cost.toFixed(2)}}</td>
+              </tr>
+
+              <tr>
+                <td colspan="4"></td>
                 <td colspan="2">Grand Total : </td>
                 <td>${{order.total.toFixed(2)}}</td>
               </tr>
