@@ -58,8 +58,14 @@
           <el-button type="success" size="mini" v-if="order.status === 5">Completed</el-button>
           <el-button type="success" size="mini" v-if="order.status === 6">Canceled</el-button>
 
+          <template v-if="order.type == 'GraphicDesign'">
+          <a :href="graphicDesign.source_file" target="_blank" class="ml-4">
+            <el-button type="success"  size="mini" icon="el-icon-download">Source File</el-button>
+          </a>
+          </template>
+
           <a href="https://merch.sas.co.nz/generate-po/2479/po/3137" target="_blank" class="ml-4">
-          <el-button type="success"  size="mini" icon="el-icon-download">Download PO</el-button>
+          <el-button type="success"  size="mini" icon="el-icon-download">PO</el-button>
           </a>
         </p>
       </div>
@@ -257,10 +263,13 @@ export default {
       order: {},
       status: '',
       tax : '',
+      graphicDesign: {},
     }
   },
   methods: {
     ...mapActions('order', ['fetchOrder','updateStatus']),
+    ...mapActions('designRequest', ['fetchDesignRequest']),
+
 
     updateStatusHandler() {
       this.updateStatus({
@@ -277,6 +286,10 @@ export default {
     let orderId = this.$route.params.id;
     this.order = await this.fetchOrder(orderId);
     this.tax = this.order.cart_total * 0.15;
+    //order.graphic_design_request.id
+    if (this.order.type == 'GraphicDesign') {
+       this.graphicDesign = await this.fetchDesignRequest(this.order.graphic_design_request.id);
+    }
   }
 }
 </script>

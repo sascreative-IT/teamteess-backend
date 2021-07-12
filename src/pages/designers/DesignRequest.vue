@@ -161,7 +161,7 @@
             </el-form>
 
           </el-tab-pane>
-          <el-tab-pane label="Chat With Customer">
+          <el-tab-pane label="Message To Customer">
 
 
             <div class="block w-full">
@@ -169,8 +169,11 @@
                 <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
                   <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
                   <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
-                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                    {{ item.attachment }} Download</a></p>
+                  <p class="mt-5"><strong>Attachment : </strong>
+                      <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + item.attachment">
+                    {{ item.attachment }}
+                      Download
+                    </a></p>
                 </el-timeline-item>
               </el-timeline>
             </div>
@@ -430,7 +433,7 @@
               </el-timeline>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Chat With Customer">
+          <el-tab-pane label="Message To Customer">
             <div class="block w-full">
               <el-timeline>
                 <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
