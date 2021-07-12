@@ -133,19 +133,22 @@ name: "DesignRequests",
     handleStartWork (row) {
       this.startWorking({
         id: row.id
-      }).then((res) => {
-        row.design_status_str = res.design_status_str;
-        row.status_str = res.status_str;
+      }).then(async () => {
+        await this.loadDesignRequests();
       }).catch((error) => {
         console.log(error);
       });
-    }
-  },
-  async mounted() {
+    },
+    async loadDesignRequests() {
       let status = this.$route.params.status;
       let paymentStatus = this.$route.params.paymentStatus;
       await this.fetchDesignRequestsHandler(status, paymentStatus);
+    }
+  },
+  async mounted() {
+      await this.loadDesignRequests();
   }
+
 }
 </script>
 

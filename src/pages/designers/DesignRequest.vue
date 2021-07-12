@@ -116,48 +116,7 @@
 
 
         <el-tabs type="border-card" class="mt-6" v-if="designRequest.updated === 0">
-          <el-tab-pane label="Messages">
-
-
-            <div class="block w-full">
-              <el-timeline>
-                <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
-                  <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
-                  <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
-                  <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                    {{ item.attachment }} Download</a></p>
-                </el-timeline-item>
-              </el-timeline>
-            </div>
-
-            <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
-
-              <el-form-item label="Comments">
-                <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
-              </el-form-item>
-
-              <el-form-item label="Attachment">
-                <el-upload
-                    class="upload-demo"
-                    :action="fileUploadAction"
-                    :before-remove="beforeRemove"
-                    :on-success="bindCommentAttachmentFileName"
-                    multiple
-                    :limit="1"
-                    :on-exceed="handleExceed"
-                    :file="designer_comment_form.attachment">
-                  <el-button size="small" type="primary">Click to upload</el-button>
-                  <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-                </el-upload>
-              </el-form-item>
-
-
-              <el-form-item>
-                <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
-              </el-form-item>
-            </el-form>
-          </el-tab-pane>
-          <el-tab-pane label="Status">
+          <el-tab-pane label="Job Status & Changes">
 
             <el-form ref="form" :model="designRequest" label-width="220px" class="w-1/2">
 
@@ -202,10 +161,9 @@
             </el-form>
 
           </el-tab-pane>
-        </el-tabs>
+          <el-tab-pane label="Chat With Customer">
 
-        <el-tabs type="border-card" class="mt-6" v-if="designRequest.updated === 1">
-          <el-tab-pane label="Messages">
+
             <div class="block w-full">
               <el-timeline>
                 <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
@@ -243,9 +201,11 @@
                 <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
               </el-form-item>
             </el-form>
-
           </el-tab-pane>
-          <el-tab-pane label="Status">
+        </el-tabs>
+
+        <el-tabs type="border-card" class="mt-6" v-if="designRequest.updated === 1">
+          <el-tab-pane label="Job Status & Changes">
             <div class="block w-full">
               <el-timeline>
                 <el-timeline-item :timestamp=designRequest.designer_status_at placement="top">
@@ -256,8 +216,11 @@
                     <h4>The graphic design submitted by {{ designRequest.designer_status_updated_by }} on
                       {{ designRequest.designer_status_at }}</h4>
                     <p class="mt-5"><strong> Comments : </strong>{{ designRequest.designer_comments }}</p>
-                    <p class="mt-5"><strong>Attachment : </strong><a :href="designRequest.designer_attachment">
-                      {{ designRequest.designer_attachment }} Download</a></p>
+                    <p class="mt-5"><strong>Attachment : </strong>
+                      <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + designRequest.designer_attachment">
+                      {{ designRequest.designer_attachment }} Download
+                      </a>
+                    </p>
 
                     <p class="mt-5"><strong>Status by designer : </strong>
                       <el-tag type="info" v-if="designRequest.status_by_designer === 1">
@@ -316,8 +279,11 @@
 
                     <h4>Change request submitted by customer on {{ item.created_at }}</h4>
                     <p class="mt-5"><strong> Description : </strong>{{ item.description }}</p>
-                    <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                      {{ item.attachment }} Download</a></p>
+                    <p class="mt-5"><strong>Attachment : </strong>
+                        <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + item.attachment">
+                      {{ item.attachment }} Download
+                      </a>
+                    </p>
 
                     <template v-if="(item.payment_status !== 0 && item.estimation != null)">
                       <el-divider content-position="left" class="mt-5">Estimated</el-divider>
@@ -330,7 +296,8 @@
                       <h4>{{ item.designer_status_updated_by }} has updated on {{ item.designer_status_at }}</h4>
                       <p class="mt-5"><strong> Comments : </strong>{{ item.designer_comments }}</p>
                       <p class="mt-5">
-                        <strong>Attachment : </strong><a :href="item.designer_attachment">
+                        <strong>Attachment : </strong>
+                          <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + item.designer_attachment">
                         {{ item.designer_attachment }} Download</a>
                       </p>
 
@@ -370,52 +337,52 @@
 
 
                       <template v-if="((item.payment_status === 0) || (item.payment_status === 2))">
-                      <el-divider content-position="left" class="mt-5">Update Status</el-divider>
-                      <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
+                        <el-divider content-position="left" class="mt-5">Update Status</el-divider>
+                        <el-form ref="form" label-width="120px" size="mini" class="mt-5 w-1/2" :model="designer_form">
 
-                        <el-form-item label="Status">
-                          <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designer_form.status_by_designer" placeholder="Select">
-                            <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                          </el-select>
-                        </el-form-item>
+                          <el-form-item label="Status">
+                            <el-select class="w-full" v-model="designer_form.status_by_designer" value-key="designer_form.status_by_designer" placeholder="Select">
+                              <el-option
+                                  v-for="item in options"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
 
-                        <el-form-item label="Comments">
-                          <el-input type="textarea"  v-model="designer_form.comments"></el-input>
-                        </el-form-item>
-
-
-                        <el-form-item label="Attachment">
-                          <el-upload
-                              class="upload-demo"
-                              :action="fileUploadAction"
-                              :before-remove="beforeRemove"
-                              :on-success="bindAttachmentFileName"
-                              multiple
-                              :limit="1"
-                              :on-exceed="handleExceed"
-                              :file="designer_form.attachment">
-                            <el-button size="small" type="primary">Click to upload</el-button>
-                            <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-                          </el-upload>
-                        </el-form-item>
-
-                        <el-form-item label="Source file">
-                          <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
-                        </el-form-item>
+                          <el-form-item label="Comments">
+                            <el-input type="textarea"  v-model="designer_form.comments"></el-input>
+                          </el-form-item>
 
 
+                          <el-form-item label="Attachment">
+                            <el-upload
+                                class="upload-demo"
+                                :action="fileUploadAction"
+                                :before-remove="beforeRemove"
+                                :on-success="bindAttachmentFileName"
+                                multiple
+                                :limit="1"
+                                :on-exceed="handleExceed"
+                                :file="designer_form.attachment">
+                              <el-button size="small" type="primary">Click to upload</el-button>
+                              <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                            </el-upload>
+                          </el-form-item>
 
-                        <el-form-item size="large">
-                          <el-button type="primary" v-on:click="updateChangeRequest(index, item.id)">Update</el-button>
-                          <el-button>Cancel</el-button>
-                        </el-form-item>
+                          <el-form-item label="Source file">
+                            <el-input type="textarea"  v-model="designer_form.source_file"></el-input>
+                          </el-form-item>
 
-                      </el-form>
+
+
+                          <el-form-item size="large">
+                            <el-button type="primary" v-on:click="updateChangeRequest(index, item.id)">Update</el-button>
+                            <el-button>Cancel</el-button>
+                          </el-form-item>
+
+                        </el-form>
                       </template>
 
 
@@ -463,6 +430,49 @@
               </el-timeline>
             </div>
           </el-tab-pane>
+          <el-tab-pane label="Chat With Customer">
+            <div class="block w-full">
+              <el-timeline>
+                <el-timeline-item placement="top" v-for="(item, index) in designRequest.comments" :key="index" :timestamp=item.created_at>
+                  <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                  <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                  <p class="mt-5"><strong>Attachment : </strong>
+                      <a target="_blank" :href="attachmentBaseUrl + 'dyo/' + item.attachment">
+                    {{ item.attachment }} Download
+                    </a></p>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
+
+            <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+              <el-form-item label="Comments">
+                <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
+              </el-form-item>
+
+              <el-form-item label="Attachment">
+                <el-upload
+                    class="upload-demo"
+                    :action="fileUploadAction"
+                    :before-remove="beforeRemove"
+                    :on-success="bindCommentAttachmentFileName"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :file="designer_comment_form.attachment">
+                  <el-button size="small" type="primary">Click to upload</el-button>
+                  <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                </el-upload>
+              </el-form-item>
+
+
+              <el-form-item>
+                <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
+              </el-form-item>
+            </el-form>
+
+          </el-tab-pane>
+
         </el-tabs>
 
       </div>
