@@ -58,7 +58,7 @@
               <div class="tees-design-wrapp">
                 <img class="tees-design-main" :src="productImageFront"/>
                 <div
-                    class="print-area-set"
+                    class="embroidery-print-area"
                     :style="{
                                 width: designAttributes.front_printable_area_values.width + 'px',
                                 height: designAttributes.front_printable_area_values.height + 'px',
@@ -85,7 +85,17 @@
                                     height: designAttributes.front_image_position_values.height + 'px',
                                 }"
                   >
-                    <img :src="frontImageUrl" alt="default" />
+                    <drr :x=designAttributes.front_image_position_values.left
+                         :y=designAttributes.front_image_position_values.top
+                         :w=designAttributes.front_image_position_values.width
+                         :h=designAttributes.front_image_position_values.height
+                         :angle="designAttributes.front_image_position_values.angle"
+                         :draggable="false"
+                         :resizable="false"
+                         :rotatable="false"
+                    >
+                    <img :src="frontImageUrl" alt="default" class="image_holder" />
+                    </drr>
                   </div>
 
                 </div>
@@ -318,6 +328,7 @@
 <script>
 import {mapActions} from "vuex";
 import {getSlug} from "@/helpers/getSlug"
+import drr from '@minogin/vue-drag-resize-rotate';
 
 export default {
   name: "DyoOrderView",
@@ -370,6 +381,9 @@ export default {
         },
       ]
     }
+  },
+  components: {
+    drr
   },
   methods: {
     ...mapActions('order', ['fetchOrder', 'fetchOrderItem']),
@@ -454,6 +468,17 @@ table, th, td {
 
 table {
   width: 100%;
+}
+
+.image_holder {
+  height: 100%;
+  overflow: hidden;
+}
+
+.embroidery-print-area {
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid green;
 }
 
 .tees-design-wrapp {
