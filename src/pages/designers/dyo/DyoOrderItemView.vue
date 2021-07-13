@@ -472,7 +472,6 @@ table {
 }
 
 .image_holder {
-  height: 100%;
   overflow: hidden;
 }
 
