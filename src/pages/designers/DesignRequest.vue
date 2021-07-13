@@ -602,8 +602,13 @@ export default {
         'data': {
           estimation: 2,
         }
+      }).then(async () => {
+        let requestId = this.designRequest.id;
+        await this.fetchDesignRequestHandler(requestId);
+        this.$message.success("The estimation has been sent successfully.")
+      }).catch(() => {
+        this.$message.error("Failed to send estimation.")
       });
-      console.log("The estimation..", this.designer_estimation_form);
     }
   },
   async beforeMount() {
