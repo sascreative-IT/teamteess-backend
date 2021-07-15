@@ -158,7 +158,7 @@
 
                   <div class="w-full">
 
-                    <div class="grid mb-2 border-b-2 bg-gray-300 p-1" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']">
+                    <div class="grid mb-2 border-b-2 bg-gray-300 p-1" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-7' : 'grid-cols-6']">
                       <div class="font-bold">Size</div>
                       <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name</div>
                       <div class="font-bold">Price</div>
