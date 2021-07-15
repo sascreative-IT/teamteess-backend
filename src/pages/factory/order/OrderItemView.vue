@@ -105,6 +105,7 @@
             <div class="print-tees-wrapp">
               <div class="tees-design-wrapp">
                 <img class="tees-design-main" :src="productImageBack"/>
+                <template v-if="designAttributes.back_printable_area_values != null">
                 <div
                     class="print-area-set"
                     :style="{
@@ -141,6 +142,7 @@
                   </div>
 
                 </div>
+                </template>
               </div>
             </div>
 
