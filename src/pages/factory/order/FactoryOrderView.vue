@@ -172,6 +172,9 @@
                     <div class="grid mb-2 border-b-2 bg-gray-300 p-1" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-4' : 'grid-cols-3']">
                       <div class="font-bold">Size</div>
                       <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name</div>
+                      <div class="font-bold">Price</div>
+                      <div class="font-bold">Size Price</div>
+                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name Price</div>
                       <div class="font-bold">QTY</div>
                       <div class="font-bold">Sub Total</div>
                     </div>
@@ -183,6 +186,15 @@
                       </div>
                       <div>
                         {{ variation.order_item_variation_values[0].attribute_value_name }}
+                      </div>
+                      <div>
+                        {{item.product_price.toFixed(2)}}
+                      </div>
+                      <div v-if="item.has_nick_names == 'Yes'">
+                        {{variation.order_item_variation_values[1].attribute_value_price.toFixed(2)}}
+                      </div>
+                      <div>
+                        {{variation.order_item_variation_values[0].attribute_value_price.toFixed(2)}}
                       </div>
                       <div>
                         {{ variation.order_item_variation_values[0].qty }}
