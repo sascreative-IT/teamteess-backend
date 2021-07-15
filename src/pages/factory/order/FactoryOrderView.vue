@@ -200,7 +200,7 @@
                         {{ variation.order_item_variation_values[0].qty }}
                       </div>
                       <div>
-                        {{ (item.product_price + variation.extra_cost).toFixed(2) }}
+                        {{ ((item.product_price * variation.order_item_variation_values[0].qty ) + (variation.extra_cost)).toFixed(2)}}
                       </div>
                     </div>
 
