@@ -181,7 +181,11 @@
                 <el-timeline>
                   <el-timeline-item placement="top" v-for="(item, index) in designAttributes.comments" :key="index" :timestamp=item.created_at>
                     <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
-                    <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
+                    <p class="mt-5"><strong> Message : </strong>
+                      <span v-html="item.body">
+
+                      </span>
+                    </p>
                     <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
                       {{ item.attachment }} Download</a></p>
                   </el-timeline-item>
@@ -381,7 +385,7 @@ export default {
           value: 72,
           label: '72 Hrs'
         },
-      ]
+      ],
     }
   },
   components: {
@@ -411,11 +415,13 @@ export default {
         commentable_obj_id: this.designAttributes.id,
         commentable_obj: 'CustomDesign',
         comments: this.designer_comment_form.comments,
-        attachment: this.designer_comment_form.attachment
+        attachment: this.designer_comment_form.attachment,
+        comment_type: this.designer_comment_form.commentType
       }).then(async ()=>{
         this.designAttributes = await this.fetchDesign(this.orderItem.custom_design_id);
         this.designer_comment_form.comments = '';
         this.designer_comment_form.attachment = '';
+        this.designer_comment_form.comment_type = '';
         this.$message.success("The message has been sent successfully.")
       }).catch((error) => {
         console.log(error);

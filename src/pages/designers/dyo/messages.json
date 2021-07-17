@@ -1,0 +1,12 @@
+{
+  "working_file_missing" : "Dear {customer_name},\n\nThank you for choosing to hang out with TeamTees.\n\nPlease note that the **working file of your logo is missing** in your order.\nPlease upload your working file in <u>**Illustration PDF**</u> format.\n\n@component('mail::button', ['url' => $working_file_link])\n    Upload Working File\n@endcomponent\n\nIf you have any questions regarding this, feel free to reach out to us at (<a target=\"_blank\" href=\"mailto:{{$support_email}}\">{{$support_email}}</a>).\nOne of our friendly staff will assist you at lightning speed.\n\nSee you again!,<br>\nTeam \"{{ config('app.name') }}\"",
+
+
+
+  "customer_doesnt_have_illustrator" : "xx",
+  "customer_sends_the_wrong_format" : "xx",
+  "the_brief_is_not_clear" : "xx",
+  "no_reference_images" : "xx",
+  "design_edit" : "xx"
+
+}
