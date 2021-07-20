@@ -375,7 +375,6 @@ export default {
       // the canvas.
       const options = {
         type: 'dataURL',
-        "proxy": "http://13.238.181.165/html2canvasproxy.php",
         useCORS: true, logging: false
       }
       this.output = await this.$html2canvas(el, options);
@@ -388,10 +387,10 @@ export default {
       // the canvas.
       const options = {
         type: 'dataURL',
-        "proxy": "http://13.238.181.165/html2canvasproxy.php",
         useCORS: true, logging: false
       }
       this.output = await this.$html2canvas(el, options);
+      console.log(this.output);
     },
     async updateStatus() {
       let id = this.orderItem.custom_design_id;
