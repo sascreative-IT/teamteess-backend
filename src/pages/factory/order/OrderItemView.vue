@@ -474,6 +474,9 @@ export default {
     let orderItem = await this.fetchOrderItem(itemId);
     this.orderItem = orderItem.data;
     this.designAttributes = await this.fetchDesign(this.orderItem.custom_design_id);
+    this.frontImageSnapshot = this.designAttributes.front_design_snapshot;
+    this.backImageSnapshot = this.designAttributes.back_design_snapshot;
+
     let product = await this.fetchProduct(this.orderItem.product_id);
     let color_key = getSlug(this.designAttributes.color_name);
     this.productImageFront = productImageUrl + "/" + product.images.[color_key].front.url;
