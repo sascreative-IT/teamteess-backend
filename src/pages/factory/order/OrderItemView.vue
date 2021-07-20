@@ -131,7 +131,6 @@
                     {{designAttributes.back_text_sample}}
                   </div>
                   <div v-if="designAttributes.back_image_name != null"
-                      class="print-area-set-image"
                       :style="{
                                     width: designAttributes.back_image_position_values.width + 'px',
                                     height: designAttributes.back_image_position_values.height + 'px',
@@ -509,7 +508,7 @@ table {
 .embroidery-print-area {
   position: absolute;
   overflow: hidden;
-  border: 1px solid green;
+  border: 0px solid green;
 }
 
 .tees-design-main {
