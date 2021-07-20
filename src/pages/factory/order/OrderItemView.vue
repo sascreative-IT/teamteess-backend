@@ -376,7 +376,7 @@ export default {
       const options = {
         type: 'dataURL',
         "proxy": "http://13.238.181.165/html2canvasproxy.php",
-        useCORS: false, logging: false
+        useCORS: true, logging: false
       }
       this.output = await this.$html2canvas(el, options);
       console.log(this.output)
@@ -389,7 +389,7 @@ export default {
       const options = {
         type: 'dataURL',
         "proxy": "http://13.238.181.165/html2canvasproxy.php",
-        useCORS: false, logging: false
+        useCORS: true, logging: false
       }
       this.output = await this.$html2canvas(el, options);
     },
