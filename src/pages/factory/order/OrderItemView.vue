@@ -150,8 +150,8 @@
         </div>
 
         <div class="w-full mb-5">
-          <el-button size="mini" v-on:click="frontPrintMe">Generate Front Image</el-button>
-          <el-button size="mini" v-on:click="backPrintMe">Generate Back Image</el-button>
+          <el-button size="mini" v-on:click="frontPrintMe">Generate Front Image <span v-if="frontImageSnapshot != ''">Generated : {{frontImageSnapshot}}</span></el-button>
+          <el-button size="mini" v-on:click="backPrintMe">Generate Back Image <span v-if="backImageSnapshot != ''">Generated : {{backImageSnapshot}}</span></el-button>
         </div>
 
         <div class="w-full">
@@ -278,6 +278,7 @@
 import {mapActions} from "vuex";
 import {getSlug} from "@/helpers/getSlug"
 import drr from '@minogin/vue-drag-resize-rotate';
+import axios from "axios";
 
 export default {
   name: "OrderItemView",
@@ -294,6 +295,8 @@ export default {
       productImageBack: '',
       frontImageUrl: '',
       backImageUrl: '',
+      frontImageSnapshot: '',
+      backImageSnapshot: '',
       designer_comment_form: {
         comments : '',
         attachment: '',
@@ -336,7 +339,7 @@ export default {
   },
   methods: {
     ...mapActions('order', ['fetchOrder', 'fetchOrderItem']),
-    ...mapActions('dyo', ['fetchDesign', 'updateDesignerStatus']),
+    ...mapActions('dyo', ['fetchDesign', 'updateDesignerStatus', 'updateFrontImageSnapshot', 'updateBackImageSnapshot']),
     ...mapActions('comment', ['storeComment']),
     ...mapActions('product', ['fetchProduct']),
     handleExceed(files, fileList) {
@@ -377,8 +380,34 @@ export default {
         type: 'dataURL',
         useCORS: true, logging: false
       }
-      this.output = await this.$html2canvas(el, options);
-      console.log(this.output)
+      let design_front_image_file = await this.$html2canvas(el, options);
+      const fd = new FormData();
+      fd.append("design_file", design_front_image_file);
+      fd.append("product_id", this.orderItem.product_id);
+      fd.append("cart_item_id", this.orderItem.id);
+      fd.append("design_id", this.orderItem.custom_design_id);
+      fd.append("side", 'front');
+      //let image_file_name = "sample" + ".png";
+      axios({
+        url: '/dyo/upload-design',
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: fd,
+      }).then(async (response) => {
+        this.updateFrontImageSnapshot({
+          "id" : this.orderItem.custom_design_id,
+          "front_design_snapshot": response.data.path
+        }).then((res) => {
+          this.frontImageSnapshot = res.front_design_snapshot;
+        }).catch((e) => {
+          console.log(e)
+        })
+
+      }).catch((e) => {
+        console.log(e);
+      });
     },
     async backPrintMe() {
       const el = this.$refs.backPrintMe;
@@ -389,8 +418,36 @@ export default {
         type: 'dataURL',
         useCORS: true, logging: false
       }
-      this.output = await this.$html2canvas(el, options);
-      console.log(this.output);
+      let design_back_image_file = await this.$html2canvas(el, options);
+      const fd = new FormData();
+      fd.append("design_file", design_back_image_file);
+      fd.append("product_id", this.orderItem.product_id);
+      fd.append("cart_item_id", this.orderItem.id);
+      fd.append("design_id", this.orderItem.custom_design_id);
+      fd.append("side", 'back');
+
+      axios({
+        url: '/dyo/upload-design',
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: fd,
+      }).then(async (response) => {
+        this.updateBackImageSnapshot({
+          "id" : this.orderItem.custom_design_id,
+          "back_design_snapshot": response.data.path
+        }).then((res) => {
+          this.backImageSnapshot = res.back_design_snapshot;
+        }).catch((e) => {
+          console.log(e)
+        })
+
+      }).catch((e) => {
+        console.log(e);
+      });
+
+
     },
     async updateStatus() {
       let id = this.orderItem.custom_design_id;

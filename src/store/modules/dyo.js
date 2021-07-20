@@ -43,6 +43,32 @@ const actions = {
                 return Promise.reject(error);
             });
     },
+
+    updateFrontImageSnapshot({commit}, payload) {
+        return dyoService.updateFrontImageSnapshot(payload.id, {
+            'front_design_snapshot' : payload.front_design_snapshot
+        })
+            .then(({data}) => {
+                commit('SET_FETCH_DESIGN_ACTION', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    updateBackImageSnapshot({commit}, payload) {
+        return dyoService.updateBackImageSnapshot(payload.id, {
+            'back_design_snapshot' : payload.back_design_snapshot
+        })
+            .then(({data}) => {
+                commit('SET_FETCH_DESIGN_ACTION', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
 }
 
 export default {
