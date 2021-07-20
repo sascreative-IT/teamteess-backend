@@ -79,7 +79,6 @@
                     {{designAttributes.front_text_sample}}
                   </div>
                   <div
-                      class="print-area-set-image"
                       :style="{
                                     width: designAttributes.front_image_position_values.width + 'px',
                                     height: designAttributes.front_image_position_values.height + 'px',
