@@ -64,7 +64,7 @@
           </a>
           </template>
 
-          <a href="https://merch.sas.co.nz/generate-po/2479/po/3137" target="_blank" class="ml-4">
+          <a v-bind:href="'http://api.teamtees.co.nz/po/'+order.id" target="_blank" class="ml-4">
           <el-button type="success"  size="mini" icon="el-icon-download">PO</el-button>
           </a>
         </p>
