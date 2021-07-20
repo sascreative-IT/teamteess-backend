@@ -55,7 +55,7 @@
         <div class="w-full">
           <div class="grid grid-cols-2 gap-2">
             <div class="print-tees-wrapp">
-              <div class="tees-design-wrapp">
+              <div class="tees-design-wrapp" ref="frontPrintMe">
                 <img class="tees-design-main" :src="productImageFront"/>
                 <div
                     class="embroidery-print-area"
@@ -103,7 +103,7 @@
             </div>
 
             <div class="print-tees-wrapp">
-              <div class="tees-design-wrapp">
+              <div class="tees-design-wrapp" ref="backPrintMe">
                 <img class="tees-design-main" :src="productImageBack"/>
                 <template v-if="designAttributes.back_printable_area_values != null">
                 <div
@@ -147,6 +147,11 @@
             </div>
 
           </div>
+        </div>
+
+        <div class="w-full mb-5">
+          <el-button size="mini" v-on:click="frontPrintMe">Generate Front Image</el-button>
+          <el-button size="mini" v-on:click="backPrintMe">Generate Back Image</el-button>
         </div>
 
         <div class="w-full">
@@ -362,6 +367,31 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
+    },
+    async frontPrintMe() {
+      const el = this.$refs.frontPrintMe;
+      // add option type to get the image version
+      // if not provided the promise will return
+      // the canvas.
+      const options = {
+        type: 'dataURL',
+        "proxy": "http://13.238.181.165/html2canvasproxy.php",
+        useCORS: false, logging: false
+      }
+      this.output = await this.$html2canvas(el, options);
+      console.log(this.output)
+    },
+    async backPrintMe() {
+      const el = this.$refs.backPrintMe;
+      // add option type to get the image version
+      // if not provided the promise will return
+      // the canvas.
+      const options = {
+        type: 'dataURL',
+        "proxy": "http://13.238.181.165/html2canvasproxy.php",
+        useCORS: false, logging: false
+      }
+      this.output = await this.$html2canvas(el, options);
     },
     async updateStatus() {
       let id = this.orderItem.custom_design_id;
