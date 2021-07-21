@@ -176,63 +176,7 @@
 
         <div class="w-full">
           <el-tabs type="border-card" class="mt-6">
-            <el-tab-pane label="Messages">
-              <div class="block w-full">
-                <el-timeline>
-                  <el-timeline-item placement="top" v-for="(item, index) in designAttributes.comments" :key="index" :timestamp=item.created_at>
-                    <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
-                    <p class="mt-5"><strong> Message : </strong>
-                      <span v-html="item.body">
-
-                      </span>
-                    </p>
-                    <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                      {{ item.attachment }} Download</a></p>
-                  </el-timeline-item>
-                </el-timeline>
-              </div>
-
-
-              <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
-
-                <el-form-item label="Comment Type">
-                  <el-radio v-model="designer_comment_form.commentType" label="1">Working file is missing</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="2">Customer doesn’t have Illustrator</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="3">Customer sends the wrong format</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="4">The Brief is not clear. Requesting clarifications</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="6">Design Edit</el-radio>
-                </el-form-item>
-
-                <el-form-item label="Comments">
-                  <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
-                </el-form-item>
-
-                <el-form-item label="Attachment">
-                  <el-upload
-                      class="upload-demo"
-                      :action="fileUploadAction"
-                      :before-remove="beforeRemove"
-                      :on-success="bindCommentAttachmentFileName"
-                      multiple
-                      :limit="1"
-                      :on-exceed="handleExceed"
-                      :file="designer_comment_form.attachment">
-                    <el-button size="small" type="primary">Click to upload</el-button>
-                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
-                  </el-upload>
-                </el-form-item>
-
-
-                <el-form-item>
-                  <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
-                </el-form-item>
-              </el-form>
-
-
-            </el-tab-pane>
-
-            <el-tab-pane label="Status">
+            <el-tab-pane label="Job Status & Changes">
               <div class="block w-full">
 
                 <div class="block w-full">
@@ -316,6 +260,60 @@
 
                 </el-form>
               </div>
+            </el-tab-pane>
+            <el-tab-pane label="Message To Customer">
+              <div class="block w-full">
+                <el-timeline>
+                  <el-timeline-item placement="top" v-for="(item, index) in designAttributes.comments" :key="index" :timestamp=item.created_at>
+                    <h3>The message added by {{item.user.first_name }} {{item.user.last_name }} ({{item.user.email}})</h3>
+                    <p class="mt-5"><strong> Message : </strong>
+                      <span v-html="item.body">
+
+                      </span>
+                    </p>
+                    <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
+                      {{ item.attachment }} Download</a></p>
+                  </el-timeline-item>
+                </el-timeline>
+              </div>
+
+
+              <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+
+                <el-form-item label="Comment Type">
+                  <el-radio v-model="designer_comment_form.commentType" label="1">Working file is missing</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="2">Customer doesn’t have Illustrator</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="3">Customer sends the wrong format</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
+                </el-form-item>
+
+                <el-form-item label="Comments">
+                  <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
+                </el-form-item>
+
+                <el-form-item label="Attachment">
+                  <el-upload
+                      class="upload-demo"
+                      :action="fileUploadAction"
+                      :before-remove="beforeRemove"
+                      :on-success="bindCommentAttachmentFileName"
+                      multiple
+                      :limit="1"
+                      :on-exceed="handleExceed"
+                      :file="designer_comment_form.attachment">
+                    <el-button size="small" type="primary">Click to upload</el-button>
+                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                  </el-upload>
+                </el-form-item>
+
+
+                <el-form-item>
+                  <el-button icon="el-icon-edit" type="primary" v-on:click="addComment">Submit</el-button>
+                </el-form-item>
+              </el-form>
+
+
             </el-tab-pane>
           </el-tabs>
         </div>

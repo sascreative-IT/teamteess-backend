@@ -179,7 +179,11 @@
             </div>
 
             <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
-
+              <el-form-item label="Comment Type">
+                <el-radio v-model="designer_comment_form.commentType" label="4">The Brief is not clear. Requesting clarifications</el-radio>
+                <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
+                <el-radio v-model="designer_comment_form.commentType" label="6">Design Edit</el-radio>
+              </el-form-item>
               <el-form-item label="Comments">
                 <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
               </el-form-item>
@@ -448,6 +452,12 @@
             </div>
 
             <el-form ref="form" :model="designer_comment_form" label-width="220px" class="w-full">
+
+              <el-form-item label="Comment Type">
+                <el-radio v-model="designer_comment_form.commentType" label="4">The Brief is not clear. Requesting clarifications</el-radio>
+                <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
+                <el-radio v-model="designer_comment_form.commentType" label="6">Design Edit</el-radio>
+              </el-form-item>
 
               <el-form-item label="Comments">
                 <el-input type="textarea"  v-model="designer_comment_form.comments"></el-input>
