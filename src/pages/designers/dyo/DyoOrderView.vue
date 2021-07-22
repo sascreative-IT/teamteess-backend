@@ -160,31 +160,44 @@
 
                     <div class="grid mb-2 border-b-2 bg-gray-300 p-1" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-7' : 'grid-cols-6']">
                       <div class="font-bold">Size</div>
-                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name</div>
-                      <div class="font-bold">Price</div>
-                      <div class="font-bold">Size Price</div>
-                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nick Name Price</div>
+                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">Nickname (NN)</div>
+                      <div class="font-bold">Kids Size</div>
+                      <div class="font-bold">+ Adult Size</div>
+                      <div class="font-bold" v-if="item.has_nick_names == 'Yes'">+ NN Cost</div>
                       <div class="font-bold">QTY</div>
                       <div class="font-bold">Sub Total</div>
                     </div>
 
 
                     <div class="grid mb-1 border-b" v-bind:class="[item.has_nick_names == 'Yes' ? 'grid-cols-7' : 'grid-cols-6']" v-for="variation in item.order_item_variations" :key="variation.id">
+                      <template v-if="variation.order_item_variation_values[0].qty>0">
                       <div v-if="item.has_nick_names == 'Yes'">
-                        {{ variation.order_item_variation_values[1].attribute_value_name }}
+                        <template v-if="typeof(variation.order_item_variation_values[1]) !== 'undefined'">
+                          {{ variation.order_item_variation_values[1].attribute_value_name }}
+                        </template>
                       </div>
                       <div>
-                        {{ variation.order_item_variation_values[0].attribute_value_name }}
+                        <template v-if="typeof(variation.order_item_variation_values[0]) !== 'undefined'">
+                          {{ variation.order_item_variation_values[0].attribute_value_name }}
+                        </template>
                       </div>
 
                       <div>
                         {{item.product_price.toFixed(2)}}
                       </div>
                       <div v-if="item.has_nick_names == 'Yes'">
-                        {{variation.order_item_variation_values[1].attribute_value_price.toFixed(2)}}
+                        <template v-if="typeof(variation.order_item_variation_values[1]) !== 'undefined'">
+                          $ {{
+                            variation.order_item_variation_values[1].attribute_value_price.toFixed(2)
+                          }}
+                        </template>
                       </div>
                       <div>
-                        {{variation.order_item_variation_values[0].attribute_value_price.toFixed(2)}}
+                        <template v-if="typeof(variation.order_item_variation_values[0]) !== 'undefined'">
+                          $ {{
+                            variation.order_item_variation_values[0].attribute_value_price.toFixed(2)
+                          }}
+                        </template>
                       </div>
                       <div>
                         {{ variation.order_item_variation_values[0].qty }}
@@ -192,6 +205,8 @@
                       <div>
                         {{ ((item.product_price * variation.order_item_variation_values[0].qty ) + (variation.extra_cost)).toFixed(2)}}
                       </div>
+                      </template>
+
                     </div>
 
                   </div>
