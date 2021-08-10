@@ -197,8 +197,11 @@
                         </template>
                       </p>
                       <p class="mt-5"><strong> Message : </strong>{{ item.body }}</p>
-                      <p class="mt-5"><strong>Attachment : </strong><a :href="item.attachment">
-                        {{ item.attachment }} Download</a></p>
+                      <p class="mt-5"><strong>Attachment : </strong>
+                        <a :href="attachmentBaseUrl + 'dyo/' +  item.attachment" target="_blank">
+                        {{ item.attachment }} Download
+                        </a>
+                      </p>
                     </el-timeline-item>
                   </el-timeline>
 
