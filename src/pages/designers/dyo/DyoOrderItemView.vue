@@ -150,6 +150,22 @@
         </div>
 
         <div class="w-full">
+          <div>
+            <p><strong>Item Color: </strong>{{designAttributes.color_name}} ({{get_pantone_number(designAttributes.color_name)}})</p>
+          </div>
+
+          <div>
+            <p><strong>Image Colors: </strong>
+              <ul style="display: inline-flex;">
+              <li v-for="(image_color, index) in designAttributes.front_image_colors" :key="index">
+                {{image_color}},
+              </li>
+          </ul>
+            </p>
+          </div>
+
+
+
           <div v-if="designAttributes.front_image_name != null">
             <p><strong>Front Image : </strong> {{designAttributes.front_image_name}}</p>
           </div>
@@ -450,6 +466,51 @@ export default {
         this.$message.error("Failed to update the status. Please try again!")
       });
     },
+    get_pantone_number(color_name) {
+      if (color_name == "Black") {
+        return "6 C";
+      } else if (color_name == "Black Marle") {
+        return "N/A";
+      } else if (color_name == "Charcoal") {
+        return "418 C";
+      } else if (color_name == "Grey Marle") {
+        return "N/A";
+      } else if (color_name == "White") {
+        return "N/A";
+      } else if (color_name == "Navy") {
+        return "275 C";
+      } else if (color_name == "Denim") {
+        return "275 C";
+      } else if (color_name == "Deep Royal") {
+        return "3584 C";
+      } else if (color_name == "Aqua") {
+        return "285 C";
+      } else if (color_name == "Kelly Green") {
+        return "348 C";
+      } else if (color_name == "Red") {
+        return "1935 C";
+      } else if (color_name == "Gold") {
+        return "137 C";
+      } else if (color_name == "Oat Metal") {
+        return "N/A";
+      } else if (color_name == "Maroon") {
+        return "7642 C";
+      } else if (color_name == "Orange") {
+        return "1655 C";
+      } else if (color_name == "Tan") {
+        return "2310 C";
+      } else if (color_name == "Khaki") {
+        return "7770 C";
+      } else if (color_name == "Pale Pink") {
+        return "496 C";
+      } else if (color_name == "Purple") {
+        return "2084 C";
+      } else if (color_name == "Pale Sky") {
+        return "N/A";
+      } else if (color_name == "Bluesone") {
+        return "546 C";
+      }
+    }
   },
 
   async mounted() {
