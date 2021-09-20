@@ -257,21 +257,6 @@
               </tbody>
             </table>
           </div>
-
-          <div>
-
-            <div class="mt-4" v-if="order.status!=4">
-              <div class="mb-4">
-                <el-alert
-                    title="Send to factory"
-                    type="warning"
-                    description="Click the bellow button to change the order status to shipped.">
-                </el-alert>
-              </div>
-
-              <el-button type="primary" v-on:click="updateStatusHandler">Shipped</el-button>
-            </div>
-          </div>
         </div>
       </div>
 

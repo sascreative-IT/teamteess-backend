@@ -4,6 +4,7 @@ import sideBar from './modules/sidebarModule';
 import user from './modules/user';
 import designRequest from './modules/designRequest';
 import designerDashboard from './modules/designerDashboard';
+import dashboardData from './modules/DashboardData';
 import product from './modules/product';
 import order from './modules/order';
 import system from './modules/system';
@@ -21,6 +22,7 @@ export default new Vuex.Store({
         order,
         system,
         designerDashboard,
+        dashboardData,
         dyo,
         comment
     }

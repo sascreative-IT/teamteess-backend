@@ -2,6 +2,7 @@ import OrderService from "@/services/OrderService";
 
 const state = () => ({
     orders: [],
+    factoryOrders: [],
     order: {},
     orderItem: {}
 })
@@ -15,7 +16,10 @@ const getters = {
     },
     getOrderItem(state) {
         return state.orderItem;
-    }
+    },
+    getFactoryOrders(state) {
+        return state.factoryOrders;
+    },
 
 }
 
@@ -31,11 +35,92 @@ const mutations = {
     SET_ORDER_ITEM(state, orderItem) {
         state.orderItem = orderItem;
     },
+
+    SET_FACTORY_ORDERS(state, orders) {
+        state.factoryOrders = orders;
+    },
 }
 
 const actions = {
     fetchOrder({commit}, orderId) {
         return OrderService.fetchOrder(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    cancelOrder({commit}, orderId) {
+        return OrderService.cancelOrder(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    sentToFactory({commit}, orderId) {
+        return OrderService.sentToFactory(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    processingInFactory({commit}, orderId) {
+        return OrderService.processingInFactory(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    sentToWareHouse({commit}, orderId, message) {
+        return OrderService.sentToWareHouse(orderId, message)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    processingInWareHouse({commit}, orderId) {
+        return OrderService.processingInWareHouse(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    shipOrder({commit}, orderId) {
+        return OrderService.shipOrder(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    completeOrder({commit}, orderId) {
+        return OrderService.completeOrder(orderId)
             .then(({data}) => {
                 commit('SET_ORDER', data)
                 return Promise.resolve(data);
@@ -69,7 +154,7 @@ const actions = {
 
     fetchFactoryOrders({commit}, status) {
         return OrderService.fetchFactoryOrders(status).then(response => {
-            commit('SET_ORDERS', response.data);
+            commit('SET_FACTORY_ORDERS', response.data);
             return Promise.resolve(response);
         }).catch(error => {
             return Promise.reject(error);
