@@ -132,7 +132,10 @@ export default {
         cancelButtonText: 'Cancel',
       }).then(async ({value}) => {
         try {
-          await this.sentToWareHouse(row.id, value);
+          await this.sentToWareHouse({
+            'orderId': row.id,
+            'message' : value
+          });
           let status = this.$route.params.status;
           await this.fetchFactoryOrdersHandler(status);
           this.$message({

@@ -86,8 +86,8 @@ const actions = {
             });
     },
 
-    sentToWareHouse({commit}, orderId, message) {
-        return OrderService.sentToWareHouse(orderId, message)
+    sentToWareHouse({commit}, orderData) {
+        return OrderService.sentToWareHouse(orderData.orderId, orderData.message)
             .then(({data}) => {
                 commit('SET_ORDER', data)
                 return Promise.resolve(data);
