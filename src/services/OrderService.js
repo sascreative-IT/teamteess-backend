@@ -3,31 +3,31 @@ import {privateAPI} from './API'
 export default {
 
     cancelOrder: async (orderId) => {
-        return privateAPI.post('/orders/cancel/'+ orderId)
+        return privateAPI.post('/orders/change-status/cancel/'+ orderId)
     },
 
     sentToFactory: async (orderId) => {
-        return privateAPI.post('/orders/send-order-to-factory/'+ orderId)
+        return privateAPI.post('/orders/change-status/send-order-to-factory/'+ orderId)
     },
 
     processingInFactory: async (orderId) => {
-        return privateAPI.post('/orders/processing-in-factory/'+ orderId)
+        return privateAPI.post('/orders/change-status/processing-in-factory/'+ orderId)
     },
 
     sentToWareHouse: async (orderId, message) => {
-        return privateAPI.post('/orders/send-order-to-wareHouse/'+ orderId, {message: message})
+        return privateAPI.post('/orders/change-status/send-order-to-wareHouse/'+ orderId, {message: message})
     },
 
     processingInWareHouse: async (orderId) => {
-        return privateAPI.post('/orders/processing-in-wareHouse/'+ orderId)
+        return privateAPI.post('/orders/change-status/processing-in-wareHouse/'+ orderId)
     },
 
     shipOrder: async (orderId) => {
-        return privateAPI.post('/orders/ship-order/'+ orderId)
+        return privateAPI.post('/orders/change-status/ship-order/'+ orderId)
     },
 
     completeOrder: async (orderId) => {
-        return privateAPI.post('/orders/complete/'+ orderId)
+        return privateAPI.post('/orders/change-status/complete/'+ orderId)
     },
 
 

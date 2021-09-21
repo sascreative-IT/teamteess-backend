@@ -76,9 +76,9 @@
                 width="250">
               <template slot-scope="scope">
                 <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
-                <el-divider v-if="scope.row.status != 'App\\Domain\\Order\\States\\SentToFactory'"
+                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status != 'App\\Domain\\Order\\States\\SentToFactory'" icon="el-icon-edit"
+                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'" icon="el-icon-edit"
                          v-on:click="handleSendToWarehouse(scope.row)"> Send to Warehouse
                 </el-link>
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'"

@@ -155,7 +155,7 @@
         </div>
       </router-link>
 
-      <router-link :to="{ name: 'FactoryOrders', params: {status:5} }">
+      <router-link :to="{ name: 'FactoryOrders', params: {status:'in-warehouse'} }">
         <div
             class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
           <svg class="h-6 w-6 fill-current mr-2" viewBox="0 0 20 20">
