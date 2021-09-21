@@ -78,18 +78,28 @@
                 <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'" icon="el-icon-edit"
-                         v-on:click="handleShipOrder(scope.row)"> Mark as Shipped
-                </el-link>
 
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'" icon="el-icon-edit"
-                         v-on:click="handleReadyForPickup(scope.row)"> Mark as Ready for Pickup
-                </el-link>
+                <template v-if="scope.row.shipping.location_type === 'region'">
+                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                           icon="el-icon-edit"
+                           v-on:click="handleShipOrder(scope.row)"> Mark as Shipped
+                  </el-link>
+                </template>
 
-                <el-divider v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
-                            direction="vertical"></el-divider>
-                <el-link v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')" icon="el-icon-edit"
-                         v-on:click="handleSendToWarehouse(scope.row)"> Mark as Completed
+                <template v-if="scope.row.shipping.location_type === 'store'">
+                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                           icon="el-icon-edit"
+                           v-on:click="handleReadyForPickup(scope.row)"> Mark as Ready for Pickup
+                  </el-link>
+                </template>
+
+                <el-divider
+                    v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
+                    direction="vertical"></el-divider>
+                <el-link
+                    v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
+                    icon="el-icon-edit"
+                    v-on:click="handleMarkAsCompleted(scope.row)"> Mark as Completed
                 </el-link>
 
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'"
@@ -128,7 +138,7 @@ export default {
     ...mapState('order', ['warehouseOrders']),
   },
   methods: {
-    ...mapActions('order', ['fetchWarehouseOrders', 'processingInWareHouse', 'shipOrder','readyToPickup']),
+    ...mapActions('order', ['fetchWarehouseOrders', 'processingInWareHouse', 'shipOrder', 'readyToPickup', 'completeOrder']),
 
     async fetchWarehouseOrdersHandler(status) {
       await this.fetchWarehouseOrders(status);
@@ -145,7 +155,7 @@ export default {
         try {
           await this.shipOrder({
             'orderId': row.id,
-            'message' : value
+            'message': value
           });
           let status = this.$route.params.status;
           await this.fetchWarehouseOrdersHandler(status);
@@ -175,7 +185,7 @@ export default {
         try {
           await this.readyToPickup({
             'orderId': row.id,
-            'message' : value
+            'message': value
           });
           let status = this.$route.params.status;
           await this.fetchWarehouseOrdersHandler(status);
@@ -201,6 +211,12 @@ export default {
       let status = this.$route.params.status;
       await this.fetchWarehouseOrdersHandler(status);
       this.$message.success("The order has been marked as processing successfully.")
+    },
+    async handleMarkAsCompleted(row) {
+      await this.completeOrder(row.id);
+      let status = this.$route.params.status;
+      await this.fetchWarehouseOrdersHandler(status);
+      this.$message.success("The order has been marked as completed successfully.")
     },
   },
   async mounted() {
