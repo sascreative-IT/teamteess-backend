@@ -158,9 +158,6 @@
                 </td>
                 <td>
                   {{ item.product_style_code }}
-                  <router-link v-if="order.type == 'DYO'" target="_blank" class="el-icon-link" :to="{ name: 'FactoryOrderItemView', params: { 'id': order.id, 'itemId': item.id} }">
-                    view Item
-                  </router-link>
                 </td>
                 <td>
                   {{ item.product_name }}
@@ -270,7 +267,7 @@
 import {mapActions} from "vuex";
 
 export default {
-  name: "FactoryOrderView",
+  name: "WarehouseOrderView",
   data() {
     return {
       order: {},

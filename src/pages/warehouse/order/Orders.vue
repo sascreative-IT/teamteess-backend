@@ -39,7 +39,7 @@
         <p class="text-xl font-semibold mb-4">Orders</p>
         <div class="w-full bg-white border text-blue-400 rounded-lg flex items-center pt-6 pb-6 pl-6 pr-1 mb-6 xl:mb-0">
           <el-table
-              :data="factoryOrders"
+              :data="warehouseOrders"
               style="width: 100%">
             <el-table-column
                 fixed
@@ -76,14 +76,35 @@
                 width="250">
               <template slot-scope="scope">
                 <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
-                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'"
+                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'" icon="el-icon-edit"
-                         v-on:click="handleSendToWarehouse(scope.row)"> Send to Warehouse
+
+                <template v-if="scope.row.shipping.location_type === 'region'">
+                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                           icon="el-icon-edit"
+                           v-on:click="handleShipOrder(scope.row)"> Mark as Shipped
+                  </el-link>
+                </template>
+
+                <template v-if="scope.row.shipping.location_type === 'store'">
+                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                           icon="el-icon-edit"
+                           v-on:click="handleReadyForPickup(scope.row)"> Mark as Ready for Pickup
+                  </el-link>
+                </template>
+
+                <el-divider
+                    v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
+                    direction="vertical"></el-divider>
+                <el-link
+                    v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
+                    icon="el-icon-edit"
+                    v-on:click="handleMarkAsCompleted(scope.row)"> Mark as Completed
                 </el-link>
-                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'"
+
+                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'" icon="el-icon-edit"
+                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'" icon="el-icon-edit"
                          v-on:click="handleMarkAsProcessing(scope.row)"> Mark as Processing
                 </el-link>
               </template>
@@ -99,7 +120,7 @@
 import {mapActions, mapState} from "vuex";
 
 export default {
-  name: "Orders",
+  name: "WarehouseOrders",
   data() {
     return {
       status: '',
@@ -109,38 +130,38 @@ export default {
     async $route(to, from) {
       if (to !== from) {
         let status = this.$route.params.status;
-        await this.fetchFactoryOrdersHandler(status);
+        await this.fetchWarehouseOrdersHandler(status);
       }
     }
   },
   computed: {
-    ...mapState('order', ['factoryOrders']),
+    ...mapState('order', ['warehouseOrders']),
   },
   methods: {
-    ...mapActions('order', ['fetchFactoryOrders', 'processingInFactory', 'sentToWareHouse']),
+    ...mapActions('order', ['fetchWarehouseOrders', 'processingInWareHouse', 'shipOrder', 'readyToPickup', 'completeOrder']),
 
-    async fetchFactoryOrdersHandler(status) {
-      await this.fetchFactoryOrders(status);
+    async fetchWarehouseOrdersHandler(status) {
+      await this.fetchWarehouseOrders(status);
     },
     handleViewClick(row) {
-      return this.$router.push({name: "FactoryOrderView", params: {id: row.id}});
+      return this.$router.push({name: "WarehouseOrderView", params: {id: row.id}});
     },
-    handleSendToWarehouse(row) {
-      this.$prompt('Message : ', `Send Order #${row.id} To Warehous`, {
+    handleShipOrder(row) {
+      this.$prompt('Message : ', `Order #${row.id} is shipped`, {
         inputType: 'textarea',
-        confirmButtonText: 'Send this order to Warehouse',
+        confirmButtonText: 'Notify Customer',
         cancelButtonText: 'Cancel',
       }).then(async ({value}) => {
         try {
-          await this.sentToWareHouse({
+          await this.shipOrder({
             'orderId': row.id,
-            'message' : value
+            'message': value
           });
           let status = this.$route.params.status;
-          await this.fetchFactoryOrdersHandler(status);
+          await this.fetchWarehouseOrdersHandler(status);
           this.$message({
             type: 'success',
-            message: "The order has been sent to warehouse successfully"
+            message: "The order has been shipped successfully"
           });
         } catch (e) {
           this.$message({
@@ -155,17 +176,52 @@ export default {
         });
       });
     },
-
+    handleReadyForPickup(row) {
+      this.$prompt('Message : ', `Order #${row.id} is ready for pickup`, {
+        inputType: 'textarea',
+        confirmButtonText: 'Notify Customer',
+        cancelButtonText: 'Cancel',
+      }).then(async ({value}) => {
+        try {
+          await this.readyToPickup({
+            'orderId': row.id,
+            'message': value
+          });
+          let status = this.$route.params.status;
+          await this.fetchWarehouseOrdersHandler(status);
+          this.$message({
+            type: 'success',
+            message: "The order status has been changed to ready for pickup successfully"
+          });
+        } catch (e) {
+          this.$message({
+            type: 'error',
+            message: 'An Error Occurred, Please Try Again Later!'
+          });
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'No changes has been made.'
+        });
+      });
+    },
     async handleMarkAsProcessing(row) {
-      await this.processingInFactory(row.id);
+      await this.processingInWareHouse(row.id);
       let status = this.$route.params.status;
-      await this.fetchFactoryOrdersHandler(status);
+      await this.fetchWarehouseOrdersHandler(status);
       this.$message.success("The order has been marked as processing successfully.")
+    },
+    async handleMarkAsCompleted(row) {
+      await this.completeOrder(row.id);
+      let status = this.$route.params.status;
+      await this.fetchWarehouseOrdersHandler(status);
+      this.$message.success("The order has been marked as completed successfully.")
     },
   },
   async mounted() {
     let status = this.$route.params.status;
-    await this.fetchFactoryOrdersHandler(status);
+    await this.fetchWarehouseOrdersHandler(status);
   }
 }
 </script>
