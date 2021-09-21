@@ -3,6 +3,7 @@ import OrderService from "@/services/OrderService";
 const state = () => ({
     orders: [],
     factoryOrders: [],
+    warehouseOrders: [],
     order: {},
     orderItem: {}
 })
@@ -38,6 +39,10 @@ const mutations = {
 
     SET_FACTORY_ORDERS(state, orders) {
         state.factoryOrders = orders;
+    },
+
+    SET_WAREHOUSE_ORDERS(state, orders) {
+        state.warehouseOrders = orders;
     },
 }
 
@@ -108,8 +113,19 @@ const actions = {
             });
     },
 
-    shipOrder({commit}, orderId) {
-        return OrderService.shipOrder(orderId)
+    shipOrder({commit}, orderData) {
+        return OrderService.shipOrder(orderData.orderId, orderData.message)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    readyToPickup({commit}, orderData) {
+        return OrderService.readyToPickup(orderData.orderId, orderData.message)
             .then(({data}) => {
                 commit('SET_ORDER', data)
                 return Promise.resolve(data);
@@ -155,6 +171,15 @@ const actions = {
     fetchFactoryOrders({commit}, status) {
         return OrderService.fetchFactoryOrders(status).then(response => {
             commit('SET_FACTORY_ORDERS', response.data);
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
+    fetchWarehouseOrders({commit}, status) {
+        return OrderService.fetchWarehouseOrders(status).then(response => {
+            commit('SET_WAREHOUSE_ORDERS', response.data);
             return Promise.resolve(response);
         }).catch(error => {
             return Promise.reject(error);

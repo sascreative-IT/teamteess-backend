@@ -7,8 +7,11 @@ import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
 import DyoOrders from '@/pages/designers/dyo/Orders';
 import FactoryDashboard from '@/pages/factory/Dashboard'
+import WarehouseDashboard from '@/pages/warehouse/Dashboard'
 import FactoryOrders from '@/pages/factory/order/Orders';
+import WarehouseOrders from '@/pages/warehouse/order/Orders';
 import FactoryOrderView from '@/pages/factory/order/FactoryOrderView';
+import WarehouseOrderView from '@/pages/warehouse/order/WarehouseOrderView';
 import FactoryOrderItemView from '@/pages/factory/order/OrderItemView';
 import DyoOrderView from '@/pages/designers/dyo/DyoOrderView';
 import DyoOrderItemView from '@/pages/designers/dyo/DyoOrderItemView';
@@ -88,6 +91,21 @@ const routes = [
                 path: '/factory/orders/view/:id/:itemId',
                 name: 'FactoryOrderItemView',
                 component: FactoryOrderItemView
+            },
+            {
+                path: '/warehouse/dashboard',
+                name: 'WarehouseDashboard',
+                component: WarehouseDashboard
+            },
+            {
+                path: '/warehouse/orders/:status',
+                name: 'WarehouseOrders',
+                component: WarehouseOrders
+            },
+            {
+                path: '/warehouse/orders/view/:id',
+                name: 'WarehouseOrderView',
+                component: WarehouseOrderView
             },
         ]
     },

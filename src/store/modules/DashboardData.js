@@ -2,12 +2,17 @@ import DashboardDataService from '@/services/DashboardDataService';
 
 
 const state = {
-    factoryDashboardData: []
+    factoryDashboardData: [],
+    warehouseDashboardData: []
 };
 
 const mutations = {
     SET_FETCH_FACTORY_DASHBOARD_DATA_SUCCESS(state, factoryDashboardData) {
         state.factoryDashboardData = factoryDashboardData;
+    },
+
+    SET_FETCH_WAREHOUSE_DASHBOARD_DATA_SUCCESS(state, warehouseDashboardData) {
+        state.warehouseDashboardData = warehouseDashboardData;
     },
 }
 
@@ -21,11 +26,18 @@ const actions = {
         });
     },
 
+    fetchWarehouseDashboardData({commit}) {
+        return DashboardDataService.fetchWarehouseData().then(response => {
+            commit('SET_FETCH_WAREHOUSE_DASHBOARD_DATA_SUCCESS', response.data);
+            return Promise.resolve(response.data);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
 };
 const getters = {
-    getFactoryDashboardData() {
-        return this.dashboardData;
-    }
+
 };
 
 export default {
