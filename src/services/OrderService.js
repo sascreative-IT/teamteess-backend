@@ -2,6 +2,10 @@ import {privateAPI} from './API'
 
 export default {
 
+    markAsPaid: async (orderId) => {
+        return privateAPI.put('/orders/tests/' + orderId)
+    },
+
     cancelOrder: async (orderId) => {
         return privateAPI.post('/orders/change-status/cancel/' + orderId)
     },
@@ -53,6 +57,10 @@ export default {
 
     fetchWarehouseOrders: async (status) => {
         return privateAPI.get('/orders/warehouse-orders/' + status)
+    },
+
+    fetchTestOrders: async () => {
+        return privateAPI.get('/orders/tests')
     },
 
     updateStatus: async (orderId, payload) => {

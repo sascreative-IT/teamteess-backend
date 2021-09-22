@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import AdminLayout from '@/components/AdminLayout'
-import Dashboard from '@/pages/Dashboard'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
+import TestOrders from '@/pages/admin/order/TestOrders';
 import DyoOrders from '@/pages/designers/dyo/Orders';
 import FactoryDashboard from '@/pages/factory/Dashboard'
+import AdminDashboard from '@/pages/admin/Dashboard'
 import WarehouseDashboard from '@/pages/warehouse/Dashboard'
 import FactoryOrders from '@/pages/factory/order/Orders';
 import WarehouseOrders from '@/pages/warehouse/order/Orders';
@@ -31,7 +32,12 @@ const routes = [
             {
                 path: '/',
                 name: 'Dashboard',
-                component: Dashboard
+                component: AdminDashboard
+            },
+            {
+                path: '/test-orders',
+                name: 'TestOrders',
+                component: TestOrders
             },
             {
                 path: '/designer',

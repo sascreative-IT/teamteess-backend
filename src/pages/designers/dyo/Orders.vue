@@ -68,7 +68,9 @@
                 label="Operations"
                 width="250">
               <template slot-scope="scope">
-                <el-button type="primary" size="mini" v-on:click="handleViewClick(scope.row)" icon="el-icon-view"> View Details</el-button>
+                <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
+                <el-divider direction="vertical"></el-divider>
+                <el-link icon="el-icon-edit" v-on:click="handleSendToFactory(scope.row)"> Sent to Factory</el-link>
               </template>
             </el-table-column>
           </el-table>
@@ -98,7 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('order', ['fetchDyoOrders']),
+    ...mapActions('order', ['fetchDyoOrders', 'sentToFactory']),
 
     async fetchDyoOrdersHandler(status) {
       this.dyoOrders = await this.fetchDyoOrders(status);
@@ -109,6 +111,13 @@ export default {
 
     handleUpdateClick(row) {
       return this.$router.push({ name: "UpdateDesignRequestStatus", params: {id: row.id}});
+    },
+
+    async handleSendToFactory(row) {
+      await this.sentToFactory(row.id);
+      let status = this.$route.params.status;
+      await this.fetchDyoOrdersHandler(status);
+      this.$message.success("The order has been sent to factory successfully.")
     },
 
     handleStartWork (row) {

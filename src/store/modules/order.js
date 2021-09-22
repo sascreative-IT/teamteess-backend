@@ -2,6 +2,7 @@ import OrderService from "@/services/OrderService";
 
 const state = () => ({
     orders: [],
+    testOrders: [],
     factoryOrders: [],
     warehouseOrders: [],
     order: {},
@@ -32,6 +33,11 @@ const mutations = {
     SET_ORDER(state, order) {
         state.order = order;
     },
+
+    SET_TEST_ORDERS(state, orders) {
+        state.testOrders = orders;
+    },
+
 
     SET_ORDER_ITEM(state, orderItem) {
         state.orderItem = orderItem;
@@ -158,6 +164,26 @@ const actions = {
             });
     },
     */
+
+    fetchTestOrders({commit}) {
+        return OrderService.fetchTestOrders().then(response => {
+            commit('SET_TEST_ORDERS', response.data);
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
+    markAsPaid({commit}, orderId) {
+        return OrderService.markAsPaid(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
 
     fetchDyoOrders({commit}, status) {
         return OrderService.fetchDyoOrders(status).then(response => {
