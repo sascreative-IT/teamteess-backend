@@ -5,10 +5,11 @@ import AdminLayout from '@/components/AdminLayout'
 import DesignersDashboard from '@/pages/designers/Dashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
 import TestOrders from '@/pages/admin/order/TestOrders';
-import DyoOrders from '@/pages/designers/dyo/Orders';
+import DyoOrders from '@/pages/designers/dyo/Orders'
 import FactoryDashboard from '@/pages/factory/Dashboard'
 import AdminDashboard from '@/pages/admin/Dashboard'
 import WarehouseDashboard from '@/pages/warehouse/Dashboard'
+import DesignHouseOrders from '@/pages/designHouse/order/Orders';
 import FactoryOrders from '@/pages/factory/order/Orders';
 import WarehouseOrders from '@/pages/warehouse/order/Orders';
 import FactoryOrderView from '@/pages/factory/order/FactoryOrderView';
@@ -44,7 +45,7 @@ const routes = [
                 redirect: { name: 'DesignersDashboard' }
             },
             {
-                path: '/designer/dashboard',
+                path: '/design-house/dashboard',
                 name: 'DesignersDashboard',
                 component: DesignersDashboard
             },
@@ -102,6 +103,11 @@ const routes = [
                 path: '/warehouse/dashboard',
                 name: 'WarehouseDashboard',
                 component: WarehouseDashboard
+            },
+            {
+                path: '/design-house/orders/:status',
+                name: 'DesignHouseOrders',
+                component: DesignHouseOrders
             },
             {
                 path: '/warehouse/orders/:status',

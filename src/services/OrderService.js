@@ -10,8 +10,12 @@ export default {
         return privateAPI.post('/orders/change-status/cancel/' + orderId)
     },
 
-    sentToFactory: async (orderId) => {
-        return privateAPI.post('/orders/change-status/send-order-to-factory/' + orderId)
+    processingInDesignHouse: async (orderId) => {
+        return privateAPI.post('/orders/change-status/processing-in-design-house/' + orderId)
+    },
+
+    sentToFactory: async (orderId, message) => {
+        return privateAPI.post('/orders/change-status/send-order-to-factory/' + orderId, {message: message})
     },
 
     processingInFactory: async (orderId) => {
@@ -51,12 +55,16 @@ export default {
         return privateAPI.get('/orders/item/' + orderItemId)
     },
 
-    fetchFactoryOrders: async (status) => {
-        return privateAPI.get('/orders/factory-orders/' + status)
+    fetchDesignHouseOrders: async (q) => {
+        return privateAPI.get('/orders/design-house-orders/' + q)
     },
 
-    fetchWarehouseOrders: async (status) => {
-        return privateAPI.get('/orders/warehouse-orders/' + status)
+    fetchFactoryOrders: async (q) => {
+        return privateAPI.get('/orders/factory-orders/' + q)
+    },
+
+    fetchWarehouseOrders: async (q) => {
+        return privateAPI.get('/orders/warehouse-orders/' + q)
     },
 
     fetchTestOrders: async () => {
