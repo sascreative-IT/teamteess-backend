@@ -2,6 +2,10 @@ import {privateAPI} from './API'
 
 export default {
 
+    fetchDesignHouseData: async () => {
+        return privateAPI.get('/dashboard/design-house-dashboard-data')
+    },
+
     fetchFactoryData: async () => {
         return privateAPI.get('/dashboard/factory-dashboard-data')
     },

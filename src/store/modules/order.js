@@ -3,6 +3,7 @@ import OrderService from "@/services/OrderService";
 const state = () => ({
     orders: [],
     testOrders: [],
+    designHouseOrders: [],
     factoryOrders: [],
     warehouseOrders: [],
     order: {},
@@ -43,6 +44,10 @@ const mutations = {
         state.orderItem = orderItem;
     },
 
+    SET_DESIGNHOUSE_ORDERS(state, orders) {
+        state.designHouseOrders = orders;
+    },
+
     SET_FACTORY_ORDERS(state, orders) {
         state.factoryOrders = orders;
     },
@@ -75,8 +80,19 @@ const actions = {
             });
     },
 
-    sentToFactory({commit}, orderId) {
-        return OrderService.sentToFactory(orderId)
+    processingInDesignHouse({commit}, orderId) {
+        return OrderService.processingInDesignHouse(orderId)
+            .then(({data}) => {
+                commit('SET_ORDER', data)
+                return Promise.resolve(data);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    },
+
+    sentToFactory({commit}, orderData) {
+        return OrderService.sentToFactory(orderData.orderId, orderData.message)
             .then(({data}) => {
                 commit('SET_ORDER', data)
                 return Promise.resolve(data);
@@ -188,6 +204,15 @@ const actions = {
     fetchDyoOrders({commit}, status) {
         return OrderService.fetchDyoOrders(status).then(response => {
             commit('SET_ORDERS', response.data);
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
+    fetchDesignHouseOrders({commit}, status) {
+        return OrderService.fetchDesignHouseOrders(status).then(response => {
+            commit('SET_DESIGNHOUSE_ORDERS', response.data);
             return Promise.resolve(response);
         }).catch(error => {
             return Promise.reject(error);

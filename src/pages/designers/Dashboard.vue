@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Dashboard from '@/components/Designer/Dashboard';
+import Dashboard from '@/components/DesignHouse/Dashboard';
 
 export default {
     name: 'DashboardHome',
@@ -58,7 +58,7 @@ export default {
                         yAxes: [{
                             gridLines: {
                                 display:false
-                            },  
+                            },
                             ticks: {
                                 display: false
                             }
@@ -91,7 +91,7 @@ export default {
                         yAxes: [{
                             gridLines: {
                                 display:false
-                            },  
+                            },
                             ticks: {
                                 display: false
                             }
