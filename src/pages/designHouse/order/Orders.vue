@@ -107,7 +107,7 @@ export default {
     async $route(to, from) {
       if (to !== from) {
         let status = this.$route.params.status;
-        await this.fetchFactoryOrdersHandler(status);
+        await this.fetchDesignHouseOrdersHandler(status);
       }
     }
   },
@@ -124,9 +124,9 @@ export default {
       return this.$router.push({name: "FactoryOrderView", params: {id: row.id}});
     },
     handleSentToFactory(row) {
-      this.$prompt('Message : ', `Send Order #${row.id} To Warehous`, {
+      this.$prompt('Message : ', `Send Order #${row.id} To Factory`, {
         inputType: 'textarea',
-        confirmButtonText: 'Send this order to Warehouse',
+        confirmButtonText: 'Send this order to Factory',
         cancelButtonText: 'Cancel',
       }).then(async ({value}) => {
         try {
@@ -138,7 +138,7 @@ export default {
           await this.fetchDesignHouseOrdersHandler(status);
           this.$message({
             type: 'success',
-            message: "The order has been sent to warehouse successfully"
+            message: "The order has been sent to factory successfully"
           });
         } catch (e) {
           this.$message({
