@@ -121,7 +121,7 @@ export default {
       await this.fetchDesignHouseOrders(status);
     },
     handleViewClick(row) {
-      return this.$router.push({name: "FactoryOrderView", params: {id: row.id}});
+      return this.$router.push({name: "DyoOrderView", params: {id: row.id}});
     },
     handleSentToFactory(row) {
       this.$prompt('Message : ', `Send Order #${row.id} To Factory`, {
