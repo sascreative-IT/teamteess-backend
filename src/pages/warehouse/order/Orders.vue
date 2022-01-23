@@ -73,21 +73,23 @@
             <el-table-column
                 fixed="right"
                 label="Operations"
-                width="250">
+                width="320">
               <template slot-scope="scope">
-                <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
+                <el-link class="mr-2" icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
+                <el-divider direction="vertical"></el-divider>
+                <el-link class="mr-2" icon="el-icon-link" v-on:click="handleTimeLineClick(scope.row)">Time Line</el-link>
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                             direction="vertical"></el-divider>
 
                 <template v-if="scope.row.shipping.location_type === 'region'">
-                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                  <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                            icon="el-icon-edit"
                            v-on:click="handleShipOrder(scope.row)"> Mark as Shipped
                   </el-link>
                 </template>
 
                 <template v-if="scope.row.shipping.location_type === 'store'">
-                  <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
+                  <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                            icon="el-icon-edit"
                            v-on:click="handleReadyForPickup(scope.row)"> Mark as Ready for Pickup
                   </el-link>
@@ -96,7 +98,7 @@
                 <el-divider
                     v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
                     direction="vertical"></el-divider>
-                <el-link
+                <el-link class="mr-2"
                     v-if="(scope.row.status == 'App\\Domain\\Order\\States\\Shipped') || (scope.row.status == 'App\\Domain\\Order\\States\\ReadyToPickUp')"
                     icon="el-icon-edit"
                     v-on:click="handleMarkAsCompleted(scope.row)"> Mark as Completed
@@ -104,7 +106,7 @@
 
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'" icon="el-icon-edit"
+                <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToWareHouse'" icon="el-icon-edit"
                          v-on:click="handleMarkAsProcessing(scope.row)"> Mark as Processing
                 </el-link>
               </template>
@@ -145,6 +147,9 @@ export default {
     },
     handleViewClick(row) {
       return this.$router.push({name: "WarehouseOrderView", params: {id: row.id}});
+    },
+    handleTimeLineClick(row) {
+      return this.$router.push({name: "OrderTimeLineView", params: {id: row.id}});
     },
     handleShipOrder(row) {
       this.$prompt('Message : ', `Order #${row.id} is shipped`, {
