@@ -19,6 +19,7 @@ import DyoOrderView from '@/pages/designers/dyo/DyoOrderView';
 import DyoOrderItemView from '@/pages/designers/dyo/DyoOrderItemView';
 import DesignRequest from '@/pages/designers/DesignRequest'
 import UpdateDesignRequestStatus from '@/pages/designers/UpdateDesignRequestStatus'
+import OrderTimeLineView from '@/pages/order/TimeLineView';
 
 import Login from '@/pages/Login'
 
@@ -118,6 +119,11 @@ const routes = [
                 path: '/warehouse/orders/view/:id',
                 name: 'WarehouseOrderView',
                 component: WarehouseOrderView
+            },
+            {
+                path: '/orders/time-line/:id',
+                name: 'OrderTimeLineView',
+                component: OrderTimeLineView
             },
         ]
     },

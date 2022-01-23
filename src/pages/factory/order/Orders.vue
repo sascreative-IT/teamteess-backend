@@ -59,7 +59,7 @@
 
             <el-table-column
                 prop="total"
-                label="Total">
+                label="Total" width="120">
             </el-table-column>
 
 
@@ -73,17 +73,20 @@
             <el-table-column
                 fixed="right"
                 label="Operations"
-                width="250">
+                width="380">
               <template slot-scope="scope">
-                <el-link icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
+                <el-link class="mr-2" icon="el-icon-link" v-on:click="handleViewClick(scope.row)">View</el-link>
+                <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'"
+                            direction="vertical"></el-divider>
+                <el-link class="mr-2" icon="el-icon-link" v-on:click="handleTimeLineClick(scope.row)">Time Line</el-link>
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'" icon="el-icon-edit"
+                <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInFactory'" icon="el-icon-edit"
                          v-on:click="handleSendToWarehouse(scope.row)"> Send to Warehouse
                 </el-link>
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'"
                             direction="vertical"></el-divider>
-                <el-link v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'" icon="el-icon-edit"
+                <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\SentToFactory'" icon="el-icon-edit"
                          v-on:click="handleMarkAsProcessing(scope.row)"> Mark as Processing
                 </el-link>
               </template>
@@ -124,6 +127,9 @@ export default {
     },
     handleViewClick(row) {
       return this.$router.push({name: "FactoryOrderView", params: {id: row.id}});
+    },
+    handleTimeLineClick(row) {
+      return this.$router.push({name: "OrderTimeLineView", params: {id: row.id}});
     },
     handleSendToWarehouse(row) {
       this.$prompt('Message : ', `Send Order #${row.id} To Warehous`, {
