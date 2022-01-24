@@ -81,7 +81,7 @@
                 <el-divider v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                             direction="vertical"></el-divider>
 
-                <template v-if="scope.row.shipping.location_type === 'region'">
+                <template v-if="scope.row.shipping == null ||  scope.row.shipping.location_type === 'region'">
                   <el-link class="mr-2" v-if="scope.row.status == 'App\\Domain\\Order\\States\\ProcessingInWareHouse'"
                            icon="el-icon-edit"
                            v-on:click="handleShipOrder(scope.row)"> Mark as Shipped
