@@ -143,8 +143,8 @@
               <thead>
               <tr>
                 <th class="center" width="2%">#</th>
-                <th width="15%">Item Code</th>
-                <th width="8%">Item</th>
+                <th width="8%">Item Code</th>
+                <th width="15%">Item</th>
                 <th>Size & Numbers</th>
                 <th class="px-2" width="5%"><b>Tax</b></th>
                 <th class="center" width="5%">Qty</th>
@@ -157,7 +157,7 @@
                   {{ index + 1 }}
                 </td>
                 <td>
-                  {{ item.product_style_code }}
+                  {{ item.product_style_code }} <BR/>
                   <router-link v-if="order.type == 'DYO'" target="_blank" class="el-icon-link" :to="{ name: 'FactoryOrderItemView', params: { 'id': order.id, 'itemId': item.id} }">
                     view Item
                   </router-link>
@@ -166,7 +166,7 @@
                   {{ item.product_name }}
                   <BR/>
                   <template v-if="order.type == 'DYO'">
-                  <strong>Item Color: </strong> RED<BR/>
+                  <strong>Item Color: </strong> {{item.custom_design.color_name}}<BR/>
                   <strong>Color Code: </strong> HA 002
                   </template>
                 </td>
