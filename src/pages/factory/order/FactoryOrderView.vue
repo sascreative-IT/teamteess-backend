@@ -164,6 +164,11 @@
                 </td>
                 <td>
                   {{ item.product_name }}
+                  <BR/>
+                  <template v-if="order.type == 'DYO'">
+                  <strong>Item Color: </strong> {{item.graphic_design_request.color_name}}<BR/>
+                  <strong>Color Code: </strong> {{item.graphic_design_request.color_name}}
+                  </template>
                 </td>
                 <td>
 
