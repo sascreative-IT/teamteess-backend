@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import AdminLayout from '@/components/AdminLayout'
 import DesignersDashboard from '@/pages/designers/Dashboard'
+import DesignRequestDashboard from '@/pages/designers/DesignRequestDashboard'
 import DesignRequests from '@/pages/designers/DesignRequests'
 import TestOrders from '@/pages/admin/order/TestOrders';
 import DyoOrders from '@/pages/designers/dyo/Orders'
@@ -49,6 +50,11 @@ const routes = [
                 path: '/design-house/dashboard',
                 name: 'DesignersDashboard',
                 component: DesignersDashboard
+            },
+            {
+                path: '/design-house/design-request-dashboard',
+                name: 'DesignRequestDashboard',
+                component: DesignRequestDashboard
             },
             {
                 path: '/designer/design-requests/:status/:paymentStatus',

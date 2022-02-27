@@ -4,7 +4,8 @@ import DashboardDataService from '@/services/DashboardDataService';
 const state = {
     designHouseDashboardData: [],
     factoryDashboardData: [],
-    warehouseDashboardData: []
+    warehouseDashboardData: [],
+    designRequestDashboardData: []
 };
 
 const mutations = {
@@ -18,6 +19,10 @@ const mutations = {
 
     SET_FETCH_WAREHOUSE_DASHBOARD_DATA_SUCCESS(state, warehouseDashboardData) {
         state.warehouseDashboardData = warehouseDashboardData;
+    },
+
+    SET_FETCH_DESIGN_REQUEST_DASHBOARD_DATA_SUCCESS(state, designRequestDashboardData) {
+        state.designRequestDashboardData = designRequestDashboardData;
     },
 }
 
@@ -43,6 +48,15 @@ const actions = {
     fetchWarehouseDashboardData({commit}) {
         return DashboardDataService.fetchWarehouseData().then(response => {
             commit('SET_FETCH_WAREHOUSE_DASHBOARD_DATA_SUCCESS', response.data);
+            return Promise.resolve(response.data);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
+    },
+
+    fetchDesignRequestDashboardData({commit}) {
+        return DashboardDataService.fetchDesignRequestDashboardData().then(response => {
+            commit('SET_FETCH_DESIGN_REQUEST_DASHBOARD_DATA_SUCCESS', response.data);
             return Promise.resolve(response.data);
         }).catch(error => {
             return Promise.reject(error);
