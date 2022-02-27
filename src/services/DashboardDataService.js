@@ -13,4 +13,8 @@ export default {
     fetchWarehouseData: async () => {
         return privateAPI.get('/dashboard/warehouse-dashboard-data')
     },
+
+    fetchDesignRequestDashboardData: async () => {
+        return privateAPI.get('/dashboard/design-request-dashboard-data')
+    },
 }
