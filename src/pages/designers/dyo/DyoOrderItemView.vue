@@ -305,7 +305,7 @@
                   <el-radio v-model="designer_comment_form.commentType" label="2">Customer doesn’t have Illustrator</el-radio>
                   <el-radio v-model="designer_comment_form.commentType" label="3">Customer sends the wrong format</el-radio>
                   <el-radio v-model="designer_comment_form.commentType" label="5">Need reference images.</el-radio>
-                  <el-radio v-model="designer_comment_form.commentType" label="6">Number of colours exceed.</el-radio>
+                  <el-radio v-model="designer_comment_form.commentType" label="7">Number of colours exceed.</el-radio>
                 </el-form-item>
 
                 <el-form-item label="Comments">
